@@ -1,0 +1,423 @@
+<UserControl x:Class="Weather.Dashboard.Avalonia.Controls.DetailView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Weather.Dashboard.Avalonia.ViewModels"
+             xmlns:controls="using:Weather.Dashboard.Avalonia.Controls"
+             xmlns:conv="using:Weather.Dashboard.Avalonia.Converters"
+             xmlns:models="clr-namespace:Weather.Dashboard.Avalonia.Models"
+             x:DataType="vm:CityWeatherViewModel"
+             Background="Transparent">
+
+    <UserControl.Resources>
+        <conv:WeatherConditionToColorConverter x:Key="ConditionToColor"/>
+        <conv:WeatherConditionToIconConverter x:Key="ConditionToIcon"/>
+        <conv:TemperatureToStringConverter x:Key="TempToString"/>
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="Auto,*" Background="{DynamicResource BackgroundBrush}">
+        
+        <!-- Animated Background Layer -->
+        <!--<Border Grid.Row="0" Grid.RowSpan="2"
+                CornerRadius="24"
+                Margin="20"
+                ClipToBounds="True">
+            
+        </Border>-->
+
+        <!-- Glassmorphism Overlay -->
+        <Border Grid.Row="0" Grid.RowSpan="2"
+                Background="#25000000"
+                CornerRadius="0"
+                Margin="0"
+                ClipToBounds="True">
+            
+            <controls:AnimatedBackgroundControl AnimationState="{Binding AnimationState}"/>
+        </Border>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Disabled"
+                     Margin="20">
+            <StackPanel Spacing="20" Margin="20">
+                
+                <!-- Modern Header with Glassmorphism -->
+                <Border Background="#30FFFFFF"
+                        CornerRadius="20"
+                        Padding="24"
+                        BoxShadow="0 8 32 0 #1A000000">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        
+                        <!-- Back Button -->
+                        <Button Grid.Column="0"
+                               Background="#25FFFFFF"
+                               BorderThickness="0"
+                               CornerRadius="12"
+                               Width="48" Height="48"
+                               Cursor="Hand"
+                               Click="BackButton_Click">
+                            <PathIcon Data="{StaticResource IconArrowBack}"
+                                     Foreground="White"
+                                     Width="24" Height="24"/>
+                        </Button>
+
+                        <!-- City Name -->
+                        <StackPanel Grid.Column="1"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                            <TextBlock Text="{Binding City.Name}"
+                                      FontSize="36"
+                                      FontWeight="Bold"
+                                      Foreground="White"
+                                      HorizontalAlignment="Center"/>
+                            <Border Background="#25FFFFFF"
+                                   CornerRadius="12"
+                                   Padding="14,8"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,10,0,0">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <PathIcon Data="{StaticResource IconLocation}"
+                                             Foreground="White"
+                                             Width="16" Height="16"
+                                             VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding City.Country}"
+                                              FontSize="15"
+                                              FontWeight="SemiBold"
+                                              Foreground="White"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Bento Grid Layout (Silicon Valley Style) -->
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20">
+                    
+                    <!-- Card 1: Current Weather (Large) -->
+                    <Border Grid.Column="0" Grid.Row="0"
+                           Background="#28FFFFFF"
+                           CornerRadius="20"
+                           Padding="28"
+                           BoxShadow="0 4 20 0 #15000000">
+                        <StackPanel Spacing="20" VerticalAlignment="Center">
+                            
+                            <!-- Weather Icon -->
+                            <Viewbox Width="100" Height="100" HorizontalAlignment="Center">
+                                <PathIcon Data="{Binding CurrentWeather.Condition, Converter={StaticResource ConditionToIcon}}"
+                                         Foreground="White"/>
+                            </Viewbox>
+
+                            <!-- Temperature -->
+                            <TextBlock Text="{Binding CurrentWeather.Temperature, Converter={StaticResource TempToString}}"
+                                      FontSize="92"
+                                      FontWeight="Bold"
+                                      Foreground="White"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,-10,0,-10"/>
+
+                            <!-- Description -->
+                            <TextBlock Text="{Binding CurrentWeather.Description}"
+                                      FontSize="18"
+                                      Foreground="White"
+                                      HorizontalAlignment="Center"
+                                      FontWeight="Medium"/>
+
+                            <!-- Feels Like -->
+                            <Border Background="#25FFFFFF"
+                                   CornerRadius="12"
+                                   Padding="16,10"
+                                   HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentWeather.FeelsLike, StringFormat='Feels like {0:F0}°'}"
+                                          FontSize="16"
+                                          Foreground="White"
+                                          FontWeight="SemiBold"/>
+                            </Border>
+
+                            <!-- Metrics Grid -->
+                            <UniformGrid Columns="2" Rows="2" Margin="10,20,10,0">
+                                <Border Background="#20FFFFFF" CornerRadius="12" Padding="14,10" Margin="4">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <PathIcon Data="{StaticResource IconHumidity}" Foreground="White" Width="22" Height="22"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Humidity, StringFormat='{}{0}%'}"
+                                                  FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                        <TextBlock Text="Humidity" FontSize="12" Foreground="#DDFFFFFF" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="#20FFFFFF" CornerRadius="12" Padding="14,10" Margin="4">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <PathIcon Data="{StaticResource IconWind}" Foreground="White" Width="22" Height="22"/>
+                                        <TextBlock Text="{Binding CurrentWeather.WindSpeed, StringFormat='{}{0:F1}'}"
+                                                  FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                        <TextBlock Text="m/s" FontSize="12" Foreground="#DDFFFFFF" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="#20FFFFFF" CornerRadius="12" Padding="14,10" Margin="4">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <PathIcon Data="{StaticResource IconPressure}" Foreground="White" Width="22" Height="22"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Pressure}"
+                                                  FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                        <TextBlock Text="hPa" FontSize="12" Foreground="#DDFFFFFF" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="#20FFFFFF" CornerRadius="12" Padding="14,10" Margin="4">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <PathIcon Data="{StaticResource IconVisibility}" Foreground="White" Width="22" Height="22"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Visibility, StringFormat='{}{0:F1}'}"
+                                                  FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                        <TextBlock Text="km" FontSize="12" Foreground="#DDFFFFFF" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 2: 7-Day Forecast -->
+                    <Border Grid.Column="1" Grid.Row="0"
+                           Background="#28FFFFFF"
+                           CornerRadius="20"
+                           Padding="28"
+                           BoxShadow="0 4 20 0 #15000000">
+                        <StackPanel Spacing="16">
+                            <StackPanel Orientation="Horizontal" Spacing="14">
+                                <Border Background="#25FFFFFF" CornerRadius="10" Padding="10">
+                                    <PathIcon Data="{StaticResource IconCalendar}" Foreground="White" Width="22" Height="22"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="7-Day Forecast" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="Extended outlook" FontSize="13" Foreground="#CCFFFFFF" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <ItemsControl ItemsSource="{Binding Forecast}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="models:ForecastItem">
+                                        <Border Background="#18FFFFFF" CornerRadius="12" Padding="14,12" Margin="0,6">
+                                            <Grid ColumnDefinitions="100,Auto,*,Auto">
+                                                <TextBlock Grid.Column="0" Text="{Binding DateTime, StringFormat='{}{0:ddd}'}"
+                                                          FontSize="16" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                                <Border Grid.Column="1" Background="#25FFFFFF" CornerRadius="10" Padding="10" Margin="10,0">
+                                                    <Viewbox Width="26" Height="26">
+                                                        <PathIcon Data="{Binding Condition, Converter={StaticResource ConditionToIcon}}" Foreground="White"/>
+                                                    </Viewbox>
+                                                </Border>
+                                                <TextBlock Grid.Column="2" Text="{Binding Condition}" FontSize="15" FontWeight="SemiBold"
+                                                          Foreground="White" VerticalAlignment="Center" Margin="10,0"/>
+                                                <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8">
+                                                    <Border Background="#25FFFFFF" CornerRadius="10" Padding="12,8">
+                                                        <TextBlock Text="{Binding MaxTemp, Converter={StaticResource TempToString}}"
+                                                                  FontSize="17" FontWeight="Bold" Foreground="White"/>
+                                                    </Border>
+                                                    <Border Background="#15FFFFFF" CornerRadius="10" Padding="12,8">
+                                                        <TextBlock Text="{Binding MinTemp, Converter={StaticResource TempToString}}"
+                                                                  FontSize="17" Foreground="#BBFFFFFF"/>
+                                                    </Border>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 3: Sun Times -->
+                    <Border Grid.Column="0" Grid.Row="1"
+                           Background="#28FFFFFF"
+                           CornerRadius="20"
+                           Padding="28"
+                           BoxShadow="0 4 20 0 #15000000">
+                        <StackPanel Spacing="20">
+                            <StackPanel Orientation="Horizontal" Spacing="14">
+                                <Border Background="#25FFFFFF" CornerRadius="10" Padding="10">
+                                    <PathIcon Data="{StaticResource IconSunny}" Foreground="White" Width="22" Height="22"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Sun Times" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="Daily cycle" FontSize="13" Foreground="#CCFFFFFF" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <Border Background="#20FFFFFF" CornerRadius="14" Padding="18,14">
+                                <StackPanel Orientation="Horizontal" Spacing="14">
+                                    <Border Background="#25FFFFFF" CornerRadius="12" Padding="12">
+                                        <PathIcon Data="{StaticResource IconSunrise}" Foreground="White" Width="28" Height="28"/>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Sunrise" FontSize="14" Foreground="#DDFFFFFF" FontWeight="Medium"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Sunrise, StringFormat='{}{0:HH:mm}'}"
+                                                  FontSize="28" FontWeight="Bold" Foreground="White" Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="#20FFFFFF" CornerRadius="14" Padding="18,14">
+                                <StackPanel Orientation="Horizontal" Spacing="14">
+                                    <Border Background="#25FFFFFF" CornerRadius="12" Padding="12">
+                                        <PathIcon Data="{StaticResource IconSunset}" Foreground="White" Width="28" Height="28"/>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Sunset" FontSize="14" Foreground="#DDFFFFFF" FontWeight="Medium"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Sunset, StringFormat='{}{0:HH:mm}'}"
+                                                  FontSize="28" FontWeight="Bold" Foreground="White" Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 4: Animation Intensity -->
+                    <Border Grid.Column="1" Grid.Row="1"
+        Background="#28FFFFFF"
+        CornerRadius="20"
+        Padding="28"
+        BoxShadow="0 4 20 0 #15000000">
+    <StackPanel Spacing="16">
+        <!-- Header -->
+        <StackPanel Orientation="Horizontal" Spacing="14">
+            <Border Background="#25FFFFFF"
+                    CornerRadius="10"
+                    Padding="10">
+                <PathIcon Data="{StaticResource IconChart}"
+                          Foreground="White"
+                          Width="22"
+                          Height="22"/>
+            </Border>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="24-Hour Forecast"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="White"/>
+                <TextBlock Text="Temperature trend"
+                           FontSize="13"
+                           Foreground="#CCFFFFFF"
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Chart Container -->
+        <Border Background="#15FFFFFF"
+                CornerRadius="16"
+                Padding="16"
+                Height="280">
+            <Grid>
+                <!-- Actual Chart -->
+                <controls:SimpleLineChart 
+                    DataPoints="{Binding HourlyTemperatures}"
+                    Foreground="White"
+                    IsVisible="{Binding HourlyTemperatures, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                
+                <!-- Loading State -->
+                <Border Background="#15FFFFFF"
+                        CornerRadius="16"
+                        Padding="16"
+                        IsVisible="{Binding HourlyTemperatures, Converter={x:Static ObjectConverters.IsNull}}">
+                    <StackPanel VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Spacing="12">
+                        <ProgressBar IsIndeterminate="True"
+                                     Width="120"
+                                     Height="4"
+                                     Foreground="White"
+                                     BorderThickness="0"
+                                     Background="Transparent"/>
+                        <TextBlock Text="Loading hourly data..."
+                                   Foreground="White"
+                                   FontSize="14"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Error State -->
+                <Border Background="#20FF5555"
+                        CornerRadius="16"
+                        Padding="20"
+                        IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <StackPanel VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Spacing="12">
+                        <PathIcon Data="{StaticResource IconError}"
+                                  Foreground="White"
+                                  Width="32"
+                                  Height="32"
+                                  HorizontalAlignment="Center"/>
+                        <TextBlock Text="Failed to load hourly data"
+                                   Foreground="White"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   Foreground="#DDFFFFFF"
+                                   FontSize="12"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   MaxWidth="200"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Statistics Summary -->
+        <UniformGrid Columns="3" Rows="1">
+            <Border Background="#15FFFFFF"
+                    CornerRadius="12"
+                    Padding="12,10"
+                    Margin="0,0,4,0">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Min"
+                               FontSize="11"
+                               Foreground="#BBFFFFFF"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding HourlyTemperatures, Converter={StaticResource MinTempConverter}}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <Border Background="#15FFFFFF"
+                    CornerRadius="12"
+                    Padding="12,10"
+                    Margin="2,0">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Avg"
+                               FontSize="11"
+                               Foreground="#BBFFFFFF"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding HourlyTemperatures, Converter={StaticResource AvgTempConverter}}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <Border Background="#15FFFFFF"
+                    CornerRadius="12"
+                    Padding="12,10"
+                    Margin="4,0,0,0">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Max"
+                               FontSize="11"
+                               Foreground="#BBFFFFFF"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding HourlyTemperatures, Converter={StaticResource MaxTempConverter}}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+    </StackPanel>
+</Border>
+
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Weather.Dashboard.Avalonia.Controls.AnimatedBackgroundControl"
+             Background="Transparent">
+    
+    <Border x:Name="RootBorder"
+            
+            ClipToBounds="True">
+        <Grid>
+            
+            <Rectangle x:Name="BackgroundRect">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#1976D2" Offset="0"/>
+                        <GradientStop Color="#64B5F6" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            
+            <Rectangle Opacity="0.15">
+                <Rectangle.Fill>
+                    <RadialGradientBrush GradientOrigin="0.3,0.3" 
+                                       RadiusX="1.5" 
+                                       RadiusY="1.5">
+                        <GradientStop Color="#FFFFFF" Offset="0"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            
+            <Canvas x:Name="AnimationCanvas" 
+                    Background="Transparent"/>
+            
+            
+            
+        </Grid>
+    </Border>
+    
+</UserControl>
