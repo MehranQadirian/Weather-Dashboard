@@ -5,7 +5,6 @@ A beautiful, modern weather dashboard application built with Avalonia UI and .NE
 ![Weather Dashboard](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-blue)
 ![.NET Version](https://img.shields.io/badge/.NET-9.0-purple)
 ![Avalonia](https://img.shields.io/badge/Avalonia-11.3.7-orange)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 ## ✨ Features
 
