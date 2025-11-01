@@ -1,9 +1,4 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:animations="clr-namespace:Avalonia.Animation;assembly=Avalonia.Animation"
-        xmlns:avalonia="clr-namespace:Weather.Dashboard.Avalonia">
-
-    
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:animations="clr-namespace:Avalonia.Animation;assembly=Avalonia.Animation" xmlns:avalonia="clr-namespace:Weather.Dashboard.Avalonia">
     <Style Selector="Button.filled">
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
@@ -15,33 +10,21 @@
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="PART_Border"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Padding="{TemplateBinding Padding}">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                    Content="{TemplateBinding Content}"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                <Border Name="PART_Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
-    
     <Style Selector="Button.filled:pointerover /template/ Border#PART_Border">
         <Setter Property="Opacity" Value="0.92"/>
     </Style>
-    
     <Style Selector="Button.filled:pressed /template/ Border#PART_Border">
         <Setter Property="Opacity" Value="0.85"/>
         <Setter Property="RenderTransform">
             <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
         </Setter>
     </Style>
-
     <Style Selector="Button.icon">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
@@ -53,31 +36,22 @@
         <Setter Property="Padding" Value="12"/>
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="PART_Border"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Padding="{TemplateBinding Padding}">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                    Content="{TemplateBinding Content}"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"/>
+                <Border Name="PART_Border" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
-
     <Style Selector="Button.icon:pointerover /template/ Border#PART_Border">
         <Setter Property="Background">
             <SolidColorBrush Color="#000000" Opacity="0.08"/>
         </Setter>
     </Style>
-
     <Style Selector="Button.icon:pressed /template/ Border#PART_Border">
         <Setter Property="Background">
             <SolidColorBrush Color="#000000" Opacity="0.12"/>
         </Setter>
     </Style>
-
     <Style Selector="Button.text">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
@@ -89,31 +63,22 @@
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="PART_Border"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Padding="{TemplateBinding Padding}">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                    Content="{TemplateBinding Content}"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"/>
+                <Border Name="PART_Border" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
-
     <Style Selector="Button.text:pointerover /template/ Border#PART_Border">
         <Setter Property="Background">
             <SolidColorBrush Color="#2563EB" Opacity="0.08"/>
         </Setter>
     </Style>
-
     <Style Selector="Button.text:pressed /template/ Border#PART_Border">
         <Setter Property="Background">
             <SolidColorBrush Color="#2563EB" Opacity="0.12"/>
         </Setter>
     </Style>
-
     <Style Selector="Border.card">
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource OutlineBrush}"/>
@@ -122,11 +87,9 @@
         <Setter Property="Padding" Value="24"/>
         <Setter Property="BoxShadow" Value="0 2 16 0 #1E000000"/>
     </Style>
-
     <Style Selector="Border.card:pointerover">
         <Setter Property="BoxShadow" Value="0 4 24 0 #28000000"/>
     </Style>
-
     <Style Selector="TextBox.modern">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
@@ -137,24 +100,14 @@
         <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="PART_Border"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
-                    <ScrollViewer Name="PART_ScrollViewer"
-                                HorizontalScrollBarVisibility="Hidden"
-                                VerticalScrollBarVisibility="Hidden">
-                        <TextPresenter Name="PART_TextPresenter"
-                                     Text="{TemplateBinding Text}"
-                                     CaretBrush="{DynamicResource PrimaryBrush}"
-                                     Margin="{TemplateBinding Padding}"/>
+                <Border Name="PART_Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}">
+                    <ScrollViewer Name="PART_ScrollViewer" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                        <TextPresenter Name="PART_TextPresenter" Text="{TemplateBinding Text}" CaretBrush="{DynamicResource PrimaryBrush}" Margin="{TemplateBinding Padding}"/>
                     </ScrollViewer>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
-    <!-- Silicon Valley Search Box Style -->
     <Style Selector="Border.search-box">
         <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource OutlineBrush}"/>
@@ -168,12 +121,10 @@
             </Transitions>
         </Setter>
     </Style>
-    
     <Style Selector="Border.search-box:pointerover">
         <Setter Property="BorderBrush" Value="{DynamicResource OnSurfaceBrush}"/>
         <Setter Property="RenderTransform" Value="scale(1.01)"/>
     </Style>
-
     <Style Selector="TextBox.search-input">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -182,12 +133,9 @@
         <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryContainerBrush}"/>
         <Setter Property="SelectionForegroundBrush" Value="{DynamicResource OnPrimaryContainerBrush}"/>
     </Style>
-
     <Style Selector="TextBox.search-input:focus">
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
-
-    <!-- Modern Popup Style -->
     <Style Selector="Popup">
         <Setter Property="Placement" Value="Bottom"/>
     </Style>
@@ -195,23 +143,18 @@
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="BorderThickness" Value="2"/>
     </Style>
-
     <Style Selector="TextBox.modern:pointerover /template/ Border#PART_Border">
         <Setter Property="BorderBrush" Value="{DynamicResource OnSurfaceBrush}"/>
     </Style>
-
     <Style Selector="ScrollBar">
         <Setter Property="Background" Value="Transparent"/>
     </Style>
-
     <Style Selector="ScrollBar:vertical">
         <Setter Property="Width" Value="8"/>
     </Style>
-
     <Style Selector="ScrollBar:horizontal">
         <Setter Property="Height" Value="8"/>
     </Style>
-
     <Style Selector="ToggleButton.icon">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -222,38 +165,27 @@
         <Setter Property="Padding" Value="12"/>
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="PART_Border"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Padding="{TemplateBinding Padding}">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                    Content="{TemplateBinding Content}"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"/>
+                <Border Name="PART_Border" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
-
     <Style Selector="ToggleButton.icon:pointerover /template/ Border#PART_Border">
         <Setter Property="Background">
             <SolidColorBrush Color="#000000" Opacity="0.08"/>
         </Setter>
     </Style>
-
     <Style Selector="ToggleButton.icon:pressed /template/ Border#PART_Border">
         <Setter Property="Background">
             <SolidColorBrush Color="#000000" Opacity="0.12"/>
         </Setter>
     </Style>
-
     <Style Selector="ToggleButton.icon:checked /template/ Border#PART_Border">
         <Setter Property="Background">
             <SolidColorBrush Color="#2563EB" Opacity="0.12"/>
         </Setter>
     </Style>
-    
-<!-- Filter Chip Styles -->
     <Style Selector="Button.filter-chip">
         <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceVariantBrush}"/>
@@ -266,81 +198,57 @@
         <Setter Property="MinHeight" Value="36"/>
         <Setter Property="Transitions">
             <Transitions>
-                <BrushTransition Property="Background" Duration="0:0:0.25" Easing="CubicEaseOut"/>
-                <BrushTransition Property="Foreground" Duration="0:0:0.25" Easing="CubicEaseOut"/>
-                <BrushTransition Property="BorderBrush" Duration="0:0:0.25" Easing="CubicEaseOut"/>
-                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" Easing="CubicEaseOut"/>
+                <BrushTransition Property="Background" Duration="0:0:0.3" Easing="CubicEaseInOut"/>
+                <BrushTransition Property="Foreground" Duration="0:0:0.3" Easing="CubicEaseInOut"/>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.3" Easing="CubicEaseInOut"/>
+                <ThicknessTransition Property="BorderThickness" Duration="0:0:0.3" Easing="CubicEaseInOut"/>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.25" Easing="CubicEaseOut"/>
             </Transitions>
         </Setter>
     </Style>
-
-    <Style Selector="Button.filter-chip:pointerover">
-        <Setter Property="Background" Value="{DynamicResource PrimaryContainerBrush}"/>
+    <Style Selector="Button.filter-chip:pointerover:not(.active)">
+        <Setter Property="Background">
+            <SolidColorBrush Color="#F1F5F9" Opacity="1"/>
+        </Setter>
+        <Setter Property="Foreground">
+            <SolidColorBrush Color="#E0F2FE"/>
+        </Setter>
+        <Setter Property="BorderBrush">
+            <SolidColorBrush Color="#BAE6FD" Opacity="0.6"/>
+        </Setter>
+        <Setter Property="RenderTransform" Value="scale(1.02) translateY(-1px)"/>
     </Style>
-
-    <Style Selector="Button.filter-chip:pressed">
-        <Setter Property="RenderTransform" Value="scale(0.85)"/>
+    <Style Selector="Button.filter-chip:pressed:not(.active)">
+        <Setter Property="RenderTransform" Value="scale(0.97)"/>
     </Style>
-
     <Style Selector="Button.filter-chip.active">
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-        <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
-
+    <Style Selector="Button.filter-chip.active:pointerover">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="RenderTransform" Value="scale(1.0)"/>
+    </Style>
+    <Style Selector="Button.filter-chip.active:pressed">
+        <Setter Property="RenderTransform" Value="scale(1.0)"/>
+    </Style>
+    <Style Selector="Button.filter-chip PathIcon">
+        <Setter Property="Foreground" Value="{Binding $parent[Button].Foreground}"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Foreground" Duration="0:0:0.3" Easing="CubicEaseInOut"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Button.filter-chip:pointerover:not(.active) PathIcon">
+        <Setter Property="Foreground" Value="{Binding $parent[Button].Foreground}"/>
+    </Style>
     <Style Selector="Button.filter-chip.active PathIcon">
-        <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
-    </Style>
-
-    <!-- Weather-specific colors -->
-    <Style Selector="Button.filter-sunny.active">
-        <Setter Property="Background" Value="#F59E0B"/>
-        <Setter Property="BorderBrush" Value="#F59E0B"/>
-    </Style>
-
-    <Style Selector="Button.filter-cloudy.active">
-        <Setter Property="Background" Value="#94A3B8"/>
-        <Setter Property="BorderBrush" Value="#94A3B8"/>
-    </Style>
-
-    <Style Selector="Button.filter-rainy.active">
-        <Setter Property="Background" Value="#3B82F6"/>
-        <Setter Property="BorderBrush" Value="#3B82F6"/>
-    </Style>
-
-    <Style Selector="Button.filter-snowy.active">
-        <Setter Property="Background" Value="#BAE6FD"/>
-        <Setter Property="BorderBrush" Value="#BAE6FD"/>
-        <Setter Property="Foreground" Value="#0C4A6E"/>
-    </Style>
-
-    <Style Selector="Button.filter-snowy.active PathIcon">
-        <Setter Property="Foreground" Value="#0C4A6E"/>
-    </Style>
-    <Style Selector="Button.filter-snowy:pointerover PathIcon">
-        <Setter Property="Foreground" Value="{DynamicResource OnPrimaryContainerBrush}"/>
-    </Style>
-    <Style Selector="Button.filter-storm.active">
-        <Setter Property="Background" Value="#8B5CF6"/>
-        <Setter Property="BorderBrush" Value="#8B5CF6"/>
-    </Style>
-
-    <Style Selector="Button.filter-partly.active">
-        <Setter Property="Background" Value="#FCD34D"/>
-        <Setter Property="BorderBrush" Value="#FCD34D"/>
-        <Setter Property="Foreground" Value="#78350F"/>
-    </Style>
-
-    <Style Selector="Button.filter-partly.active PathIcon">
-        <Setter Property="Foreground" Value="#78350F"/>
-    </Style>
-    <Style Selector="Button.filter-partly:pointerover PathIcon">
-        <Setter Property="Foreground" Value="{DynamicResource OnPrimaryContainerBrush}"/>
-    </Style>
-    <Style Selector="Button.filter-foggy.active">
-        <Setter Property="Background" Value="#A1A1AA"/>
-        <Setter Property="BorderBrush" Value="#A1A1AA"/>
+        <Setter Property="Foreground" Value="{Binding $parent[Button].Foreground}"/>
     </Style>
 </Styles>

@@ -6,6 +6,7 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,15 +20,45 @@
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="LibVLCSharp" Version="3.9.4" />
+        <PackageReference Include="LibVLCSharp.Avalonia" Version="3.9.4" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
         <PackageReference Include="Polly" Version="8.6.4" />
         <PackageReference Include="System.Linq" Version="4.3.0" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
         <PackageReference Include="System.Text.Json" Version="9.0.10" />
+        <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Assets\icon.ico" />
       <AvaloniaResource Include="Assets\icon.ico" />
+      <None Remove="Assets\Videos\cloudy.gif" />
+      <None Remove="Assets\Videos\cloudy-night.gif" />
+      <None Remove="Assets\Videos\foggy.gif" />
+      <None Remove="Assets\Videos\partly-cloudy.gif" />
+      <None Remove="Assets\Videos\rainy.gif" />
+      <None Remove="Assets\Videos\snowy.gif" />
+      <None Remove="Assets\Videos\stormy.gif" />
+      <None Remove="Assets\Videos\sunny.gif" />
+      <None Remove="Assets\Videos\sunny-night.gif" />
+      <AvaloniaResource Remove="Assets\Videos\**" />
+      <None Remove="Assets\Videos\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaXaml Remove="Assets\Videos\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Assets\Videos\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Assets\Videos\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Remove="Assets\Videos\**" />
     </ItemGroup>
 </Project>

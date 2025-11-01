@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace Weather.Dashboard.Avalonia.Services
 {
-    /// <summary>
-    /// Application configuration model
-    /// </summary>
     public class AppConfiguration
     {
         public bool IsDarkTheme { get; set; }
@@ -20,16 +17,10 @@ namespace Weather.Dashboard.Avalonia.Services
         public double AnimationIntensity { get; set; } = 0.7;
         public string Version { get; set; } = "2.0.0";
         public DateTime LastModified { get; set; } = DateTime.Now;
-
-        // Window state
         public double WindowWidth { get; set; } = 1300;
         public double WindowHeight { get; set; } = 750;
         public bool WindowMaximized { get; set; } = false;
     }
-
-    /// <summary>
-    /// Configuration service interface
-    /// </summary>
     public interface IConfigurationService
     {
         AppConfiguration Configuration { get; }
@@ -38,10 +29,6 @@ namespace Weather.Dashboard.Avalonia.Services
         Task<T> GetValueAsync<T>(string key, T defaultValue = default);
         Task SetValueAsync<T>(string key, T value);
     }
-
-    /// <summary>
-    /// JSON-based configuration service
-    /// </summary>
     public class ConfigurationService : IConfigurationService
     {
         private readonly string _configPath;
@@ -75,10 +62,6 @@ namespace Weather.Dashboard.Avalonia.Services
 
             _configuration = new AppConfiguration();
         }
-
-        /// <summary>
-        /// Load configuration from disk
-        /// </summary>
         public async Task LoadAsync()
         {
             try
@@ -107,10 +90,6 @@ namespace Weather.Dashboard.Avalonia.Services
                 _configuration = new AppConfiguration();
             }
         }
-
-        /// <summary>
-        /// Save configuration to disk
-        /// </summary>
         public async Task SaveAsync()
         {
             try
@@ -126,10 +105,6 @@ namespace Weather.Dashboard.Avalonia.Services
                 System.Diagnostics.Debug.WriteLine($"❌ Failed to save configuration: {ex.Message}");
             }
         }
-
-        /// <summary>
-        /// Get a specific configuration value
-        /// </summary>
         public Task<T> GetValueAsync<T>(string key, T defaultValue = default)
         {
             try
@@ -151,10 +126,6 @@ namespace Weather.Dashboard.Avalonia.Services
 
             return Task.FromResult(defaultValue);
         }
-
-        /// <summary>
-        /// Set a specific configuration value
-        /// </summary>
         public async Task SetValueAsync<T>(string key, T value)
         {
             try
@@ -171,10 +142,6 @@ namespace Weather.Dashboard.Avalonia.Services
                 System.Diagnostics.Debug.WriteLine($"⚠️ Failed to set config value '{key}': {ex.Message}");
             }
         }
-
-        /// <summary>
-        /// Detect system theme preference (Windows 10/11)
-        /// </summary>
         private bool DetectSystemTheme()
         {
             try
@@ -193,7 +160,7 @@ namespace Weather.Dashboard.Avalonia.Services
                 System.Diagnostics.Debug.WriteLine($"⚠️ System theme detection failed: {ex.Message}");
             }
 
-            return false; // Default to light theme
+            return false; 
         }
     }
 }

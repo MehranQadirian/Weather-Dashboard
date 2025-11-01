@@ -13,7 +13,7 @@ namespace Weather.Dashboard.Avalonia.Converters
         {
             if (value is double temp)
             {
-                return $"{temp:F0}°";
+                return $"{temp:F0}°C";
             }
             return "N/A";
         }

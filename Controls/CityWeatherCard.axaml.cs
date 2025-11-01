@@ -23,27 +23,5 @@ namespace Weather.Dashboard.Avalonia.Controls
                 }
             }
         }
-        
-        private void RemoveButton_Click(object? sender, RoutedEventArgs e)
-        {
-            if (DataContext is CityWeatherViewModel cityViewModel)
-            {
-                var mainWindow = TopLevel.GetTopLevel(this) as MainWindow;
-                var mainViewModel = mainWindow?.DataContext as MainViewModel;
-                mainViewModel?.RemoveCityCommand?.Execute(cityViewModel);
-            }
-        }
-        
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is CityWeatherViewModel viewModel)
-            {
-                var mainWindow = (MainWindow)TopLevel.GetTopLevel(this);
-                if (mainWindow?.DataContext is MainViewModel mainVM)
-                {
-                    mainVM.SelectCityCommand?.Execute(null);
-                }
-            }
-        }
     }
 }

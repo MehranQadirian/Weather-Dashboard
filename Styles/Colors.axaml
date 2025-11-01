@@ -1,158 +1,99 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style>
         <Style.Resources>
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- MATERIAL 3 + MINIMAL DESIGN SYSTEM - LIGHT THEME COLORS -->
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            
-            <!-- Primary Colors -->
             <Color x:Key="LightPrimaryColor">#2563EB</Color>
             <Color x:Key="LightOnPrimaryColor">#FFFFFF</Color>
             <Color x:Key="LightPrimaryContainerColor">#DBEAFE</Color>
             <Color x:Key="LightOnPrimaryContainerColor">#1E3A8A</Color>
-
-            <!-- Secondary Colors -->
             <Color x:Key="LightSecondaryColor">#7C3AED</Color>
             <Color x:Key="LightOnSecondaryColor">#FFFFFF</Color>
             <Color x:Key="LightSecondaryContainerColor">#EDE9FE</Color>
             <Color x:Key="LightOnSecondaryContainerColor">#5B21B6</Color>
-
-            <!-- Surface Colors -->
             <Color x:Key="LightSurfaceColor">#FFFFFF</Color>
             <Color x:Key="LightOnSurfaceColor">#0F172A</Color>
             <Color x:Key="LightSurfaceVariantColor">#F8FAFC</Color>
             <Color x:Key="LightOnSurfaceVariantColor">#64748B</Color>
-
-            <!-- Background Colors -->
             <Color x:Key="LightBackgroundColor">#F1F5F9</Color>
             <Color x:Key="LightOnBackgroundColor">#0F172A</Color>
-
-            <!-- Outline & Border -->
             <Color x:Key="LightOutlineColor">#E2E8F0</Color>
             <Color x:Key="LightOutlineVariantColor">#CBD5E1</Color>
-
-            <!-- State Colors -->
             <Color x:Key="LightErrorColor">#EF4444</Color>
             <Color x:Key="LightOnErrorColor">#FFFFFF</Color>
             <Color x:Key="LightSuccessColor">#10B981</Color>
             <Color x:Key="LightWarningColor">#F59E0B</Color>
             <Color x:Key="LightInfoColor">#3B82F6</Color>
-
-            <!-- Shadow & Scrim -->
             <Color x:Key="LightShadowColor">#000000</Color>
             <Color x:Key="LightScrimColor">#000000</Color>
-
-            <!-- Weather Condition Colors (Light) -->
             <Color x:Key="LightSunnyColor">#F59E0B</Color>
             <Color x:Key="LightCloudyColor">#94A3B8</Color>
             <Color x:Key="LightRainyColor">#3B82F6</Color>
             <Color x:Key="LightSnowyColor">#E0F2FE</Color>
             <Color x:Key="LightStormColor">#8B5CF6</Color>
             <Color x:Key="LightFoggyColor">#A1A1AA</Color>
-
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- MATERIAL 3 + MINIMAL DESIGN SYSTEM - DARK THEME COLORS -->
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            
-            <!-- Primary Colors -->
             <Color x:Key="DarkPrimaryColor">#60A5FA</Color>
             <Color x:Key="DarkOnPrimaryColor">#1E3A8A</Color>
             <Color x:Key="DarkPrimaryContainerColor">#1E40AF</Color>
             <Color x:Key="DarkOnPrimaryContainerColor">#DBEAFE</Color>
-
-            <!-- Secondary Colors -->
             <Color x:Key="DarkSecondaryColor">#A78BFA</Color>
             <Color x:Key="DarkOnSecondaryColor">#4C1D95</Color>
             <Color x:Key="DarkSecondaryContainerColor">#5B21B6</Color>
             <Color x:Key="DarkOnSecondaryContainerColor">#EDE9FE</Color>
-
-            <!-- Surface Colors -->
             <Color x:Key="DarkSurfaceColor">#1E293B</Color>
             <Color x:Key="DarkOnSurfaceColor">#F1F5F9</Color>
             <Color x:Key="DarkSurfaceVariantColor">#1A1F28</Color>
             <Color x:Key="DarkOnSurfaceVariantColor">#B0BCC4</Color>
-
-            <!-- Background Colors -->
             <Color x:Key="DarkBackgroundColor">#020617</Color>
             <Color x:Key="DarkOnBackgroundColor">#F8FAFC</Color>
-
-            <!-- Outline & Border -->
             <Color x:Key="DarkOutlineColor">#334155</Color>
             <Color x:Key="DarkOutlineVariantColor">#475569</Color>
-
-            <!-- State Colors -->
             <Color x:Key="DarkErrorColor">#F87171</Color>
             <Color x:Key="DarkOnErrorColor">#7F1D1D</Color>
             <Color x:Key="DarkSuccessColor">#34D399</Color>
             <Color x:Key="DarkWarningColor">#FBBF24</Color>
             <Color x:Key="DarkInfoColor">#60A5FA</Color>
-
-            <!-- Shadow & Scrim -->
             <Color x:Key="DarkShadowColor">#000000</Color>
             <Color x:Key="DarkScrimColor">#000000</Color>
-
-            <!-- Weather Condition Colors (Dark) -->
             <Color x:Key="DarkSunnyColor">#FBBF24</Color>
             <Color x:Key="DarkCloudyColor">#94A3B8</Color>
             <Color x:Key="DarkRainyColor">#60A5FA</Color>
             <Color x:Key="DarkSnowyColor">#BAE6FD</Color>
             <Color x:Key="DarkStormColor">#A78BFA</Color>
             <Color x:Key="DarkFoggyColor">#A1A1AA</Color>
-
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- LIGHT THEME BRUSHES -->
-            <!-- ═══════════════════════════════════════════════════════════════ -->
             
             <SolidColorBrush x:Key="LightPrimaryBrush" Color="{StaticResource LightPrimaryColor}"/>
             <SolidColorBrush x:Key="LightOnPrimaryBrush" Color="{StaticResource LightOnPrimaryColor}"/>
             <SolidColorBrush x:Key="LightPrimaryContainerBrush" Color="{StaticResource LightPrimaryContainerColor}"/>
             <SolidColorBrush x:Key="LightOnPrimaryContainerBrush" Color="{StaticResource LightOnPrimaryContainerColor}"/>
-            
             <SolidColorBrush x:Key="LightSecondaryBrush" Color="{StaticResource LightSecondaryColor}"/>
             <SolidColorBrush x:Key="LightOnSecondaryBrush" Color="{StaticResource LightOnSecondaryColor}"/>
             <SolidColorBrush x:Key="LightSecondaryContainerBrush" Color="{StaticResource LightSecondaryContainerColor}"/>
-            
             <SolidColorBrush x:Key="LightSurfaceBrush" Color="{StaticResource LightSurfaceColor}"/>
             <SolidColorBrush x:Key="LightOnSurfaceBrush" Color="{StaticResource LightOnSurfaceColor}"/>
             <SolidColorBrush x:Key="LightSurfaceVariantBrush" Color="{StaticResource LightSurfaceVariantColor}"/>
             <SolidColorBrush x:Key="LightOnSurfaceVariantBrush" Color="{StaticResource LightOnSurfaceVariantColor}"/>
-            
             <SolidColorBrush x:Key="LightBackgroundBrush" Color="{StaticResource LightBackgroundColor}"/>
             <SolidColorBrush x:Key="LightOnBackgroundBrush" Color="{StaticResource LightOnBackgroundColor}"/>
-            
             <SolidColorBrush x:Key="LightOutlineBrush" Color="{StaticResource LightOutlineColor}"/>
             <SolidColorBrush x:Key="LightOutlineVariantBrush" Color="{StaticResource LightOutlineVariantColor}"/>
-            
             <SolidColorBrush x:Key="LightErrorBrush" Color="{StaticResource LightErrorColor}"/>
             <SolidColorBrush x:Key="LightSuccessBrush" Color="{StaticResource LightSuccessColor}"/>
             <SolidColorBrush x:Key="LightWarningBrush" Color="{StaticResource LightWarningColor}"/>
             <SolidColorBrush x:Key="LightInfoBrush" Color="{StaticResource LightInfoColor}"/>
-
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- DARK THEME BRUSHES -->
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            
             <SolidColorBrush x:Key="DarkPrimaryBrush" Color="{StaticResource DarkPrimaryColor}"/>
             <SolidColorBrush x:Key="DarkOnPrimaryBrush" Color="{StaticResource DarkOnPrimaryColor}"/>
             <SolidColorBrush x:Key="DarkPrimaryContainerBrush" Color="{StaticResource DarkPrimaryContainerColor}"/>
             <SolidColorBrush x:Key="DarkOnPrimaryContainerBrush" Color="{StaticResource DarkOnPrimaryContainerColor}"/>
-            
             <SolidColorBrush x:Key="DarkSecondaryBrush" Color="{StaticResource DarkSecondaryColor}"/>
             <SolidColorBrush x:Key="DarkOnSecondaryBrush" Color="{StaticResource DarkOnSecondaryColor}"/>
             <SolidColorBrush x:Key="DarkSecondaryContainerBrush" Color="{StaticResource DarkSecondaryContainerColor}"/>
-            
             <SolidColorBrush x:Key="DarkSurfaceBrush" Color="{StaticResource DarkSurfaceColor}"/>
             <SolidColorBrush x:Key="DarkOnSurfaceBrush" Color="{StaticResource DarkOnSurfaceColor}"/>
             <SolidColorBrush x:Key="DarkSurfaceVariantBrush" Color="{StaticResource DarkSurfaceVariantColor}"/>
             <SolidColorBrush x:Key="DarkOnSurfaceVariantBrush" Color="{StaticResource DarkOnSurfaceVariantColor}"/>
-            
             <SolidColorBrush x:Key="DarkBackgroundBrush" Color="{StaticResource DarkBackgroundColor}"/>
             <SolidColorBrush x:Key="DarkOnBackgroundBrush" Color="{StaticResource DarkOnBackgroundColor}"/>
-            
             <SolidColorBrush x:Key="DarkOutlineBrush" Color="{StaticResource DarkOutlineColor}"/>
             <SolidColorBrush x:Key="DarkOutlineVariantBrush" Color="{StaticResource DarkOutlineVariantColor}"/>
-            
             <SolidColorBrush x:Key="DarkErrorBrush" Color="{StaticResource DarkErrorColor}"/>
             <SolidColorBrush x:Key="DarkSuccessBrush" Color="{StaticResource DarkSuccessColor}"/>
             <SolidColorBrush x:Key="DarkWarningBrush" Color="{StaticResource DarkWarningColor}"/>

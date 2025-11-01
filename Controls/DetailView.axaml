@@ -1,421 +1,191 @@
-<UserControl x:Class="Weather.Dashboard.Avalonia.Controls.DetailView"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:Weather.Dashboard.Avalonia.ViewModels"
-             xmlns:controls="using:Weather.Dashboard.Avalonia.Controls"
-             xmlns:conv="using:Weather.Dashboard.Avalonia.Converters"
-             xmlns:models="clr-namespace:Weather.Dashboard.Avalonia.Models"
-             x:DataType="vm:CityWeatherViewModel"
-             Background="Transparent">
-
-    <UserControl.Resources>
-        <conv:WeatherConditionToColorConverter x:Key="ConditionToColor"/>
-        <conv:WeatherConditionToIconConverter x:Key="ConditionToIcon"/>
-        <conv:TemperatureToStringConverter x:Key="TempToString"/>
-    </UserControl.Resources>
-
-    <Grid RowDefinitions="Auto,*" Background="{DynamicResource BackgroundBrush}">
-        
-        <!-- Animated Background Layer -->
-        <!--<Border Grid.Row="0" Grid.RowSpan="2"
-                CornerRadius="24"
-                Margin="20"
-                ClipToBounds="True">
-            
-        </Border>-->
-
-        <!-- Glassmorphism Overlay -->
-        <Border Grid.Row="0" Grid.RowSpan="2"
-                Background="#25000000"
-                CornerRadius="0"
-                Margin="0"
-                ClipToBounds="True">
-            
-            <controls:AnimatedBackgroundControl AnimationState="{Binding AnimationState}"/>
-        </Border>
-
-        <!-- Main Content -->
-        <ScrollViewer Grid.Row="1"
-                     VerticalScrollBarVisibility="Auto"
-                     HorizontalScrollBarVisibility="Disabled"
-                     Margin="20">
-            <StackPanel Spacing="20" Margin="20">
-                
-                <!-- Modern Header with Glassmorphism -->
-                <Border Background="#30FFFFFF"
-                        CornerRadius="20"
-                        Padding="24"
-                        BoxShadow="0 8 32 0 #1A000000">
+<UserControl x:Class="Weather.Dashboard.Avalonia.Controls.DetailView" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:Weather.Dashboard.Avalonia.ViewModels" xmlns:controls="using:Weather.Dashboard.Avalonia.Controls" xmlns:conv="using:Weather.Dashboard.Avalonia.Converters" xmlns:models="clr-namespace:Weather.Dashboard.Avalonia.Models" x:DataType="vm:CityWeatherViewModel" Background="{DynamicResource BackgroundBrush}">
+    <Grid RowDefinitions="*" Background="{DynamicResource BackgroundBrush}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Spacing="20" Margin="24,20">
+                <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="20" Padding="24" BorderBrush="{DynamicResource OutlineBrush}" BorderThickness="1">
                     <Grid ColumnDefinitions="Auto,*,Auto">
-                        
-                        <!-- Back Button -->
-                        <Button Grid.Column="0"
-                               Background="#25FFFFFF"
-                               BorderThickness="0"
-                               CornerRadius="12"
-                               Width="48" Height="48"
-                               Cursor="Hand"
-                               Click="BackButton_Click">
-                            <PathIcon Data="{StaticResource IconArrowBack}"
-                                     Foreground="White"
-                                     Width="24" Height="24"/>
+                        <Button Grid.Column="0" Background="{DynamicResource SurfaceVariantBrush}" BorderThickness="0" CornerRadius="12" Width="48" Height="48" Cursor="Hand" Click="BackButton_Click">
+                            <PathIcon Data="{StaticResource IconArrowBack}" Foreground="{DynamicResource OnSurfaceBrush}" Width="24" Height="24"/>
                         </Button>
-
-                        <!-- City Name -->
-                        <StackPanel Grid.Column="1"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center">
-                            <TextBlock Text="{Binding City.Name}"
-                                      FontSize="36"
-                                      FontWeight="Bold"
-                                      Foreground="White"
-                                      HorizontalAlignment="Center"/>
-                            <Border Background="#25FFFFFF"
-                                   CornerRadius="12"
-                                   Padding="14,8"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,10,0,0">
-                                <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <PathIcon Data="{StaticResource IconLocation}"
-                                             Foreground="White"
-                                             Width="16" Height="16"
-                                             VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding City.Country}"
-                                              FontSize="15"
-                                              FontWeight="SemiBold"
-                                              Foreground="White"/>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding City.Name}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center"/>
+                            <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="10" Padding="12,6" HorizontalAlignment="Center" Margin="0,8,0,0">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <PathIcon Data="{StaticResource IconLocation}" Foreground="{DynamicResource OnSurfaceVariantBrush}" Width="14" Height="14" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding City.Country}" FontSize="13" Foreground="{DynamicResource OnSurfaceVariantBrush}"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
                     </Grid>
                 </Border>
-
-                <!-- Bento Grid Layout (Silicon Valley Style) -->
                 <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20">
-                    
-                    <!-- Card 1: Current Weather (Large) -->
-                    <Border Grid.Column="0" Grid.Row="0"
-                           Background="#28FFFFFF"
-                           CornerRadius="20"
-                           Padding="28"
-                           BoxShadow="0 4 20 0 #15000000">
-                        <StackPanel Spacing="20" VerticalAlignment="Center">
-                            
-                            <!-- Weather Icon -->
-                            <Viewbox Width="100" Height="100" HorizontalAlignment="Center">
-                                <PathIcon Data="{Binding CurrentWeather.Condition, Converter={StaticResource ConditionToIcon}}"
-                                         Foreground="White"/>
+                    <Border Grid.Column="0" Grid.Row="0" IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowCurrentWeatherCard}" Background="{DynamicResource SurfaceBrush}" CornerRadius="20" Padding="24" BorderBrush="{DynamicResource OutlineBrush}" BorderThickness="1">
+                        <StackPanel Spacing="16" VerticalAlignment="Center">
+                            <Viewbox Width="80" Height="80" HorizontalAlignment="Center">
+                                <PathIcon Data="{Binding CurrentWeather.Condition, Converter={StaticResource ConditionToIcon}}" Foreground="{DynamicResource PrimaryBrush}"/>
                             </Viewbox>
-
-                            <!-- Temperature -->
-                            <TextBlock Text="{Binding CurrentWeather.Temperature, Converter={StaticResource TempToString}}"
-                                      FontSize="92"
-                                      FontWeight="Bold"
-                                      Foreground="White"
-                                      HorizontalAlignment="Center"
-                                      Margin="0,-10,0,-10"/>
-
-                            <!-- Description -->
-                            <TextBlock Text="{Binding CurrentWeather.Description}"
-                                      FontSize="18"
-                                      Foreground="White"
-                                      HorizontalAlignment="Center"
-                                      FontWeight="Medium"/>
-
-                            <!-- Feels Like -->
-                            <Border Background="#25FFFFFF"
-                                   CornerRadius="12"
-                                   Padding="16,10"
-                                   HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding CurrentWeather.FeelsLike, StringFormat='Feels like {0:F0}°'}"
-                                          FontSize="16"
-                                          Foreground="White"
-                                          FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding CurrentWeather.Temperature, Converter={StaticResource TempToString}}" FontSize="56" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentWeather.Description}" FontSize="16" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center" FontWeight="Medium"/>
+                            <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="10" Padding="12,8" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentWeather.FeelsLike, StringFormat=&apos;Feels like {0:F0}°&apos;}" FontSize="14" Foreground="{DynamicResource OnSurfaceVariantBrush}" FontWeight="SemiBold"/>
                             </Border>
-
-                            <!-- Metrics Grid -->
-                            <UniformGrid Columns="2" Rows="2" Margin="10,20,10,0">
-                                <Border Background="#20FFFFFF" CornerRadius="12" Padding="14,10" Margin="4">
+                            <UniformGrid Columns="2" Rows="2" Margin="8,12,8,0">
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="12" Padding="12,8" Margin="4">
                                     <StackPanel HorizontalAlignment="Center">
-                                        <PathIcon Data="{StaticResource IconHumidity}" Foreground="White" Width="22" Height="22"/>
-                                        <TextBlock Text="{Binding CurrentWeather.Humidity, StringFormat='{}{0}%'}"
-                                                  FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
-                                        <TextBlock Text="Humidity" FontSize="12" Foreground="#DDFFFFFF" HorizontalAlignment="Center"/>
+                                        <PathIcon Data="{StaticResource IconHumidity}" Foreground="{DynamicResource SecondaryBrush}" Width="18" Height="18"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Humidity, StringFormat=&apos;{}{0}%&apos;}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                                        <TextBlock Text="Humidity" FontSize="11" Foreground="{DynamicResource OnSurfaceVariantBrush}" HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
-                                <Border Background="#20FFFFFF" CornerRadius="12" Padding="14,10" Margin="4">
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="12" Padding="12,8" Margin="4">
                                     <StackPanel HorizontalAlignment="Center">
-                                        <PathIcon Data="{StaticResource IconWind}" Foreground="White" Width="22" Height="22"/>
-                                        <TextBlock Text="{Binding CurrentWeather.WindSpeed, StringFormat='{}{0:F1}'}"
-                                                  FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
-                                        <TextBlock Text="m/s" FontSize="12" Foreground="#DDFFFFFF" HorizontalAlignment="Center"/>
+                                        <PathIcon Data="{StaticResource IconWind}" Foreground="{DynamicResource PrimaryBrush}" Width="18" Height="18"/>
+                                        <TextBlock Text="{Binding CurrentWeather.WindSpeed, StringFormat=&apos;{}{0:F1}&apos;}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                                        <TextBlock Text="m/s" FontSize="11" Foreground="{DynamicResource OnSurfaceVariantBrush}" HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
-                                <Border Background="#20FFFFFF" CornerRadius="12" Padding="14,10" Margin="4">
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="12" Padding="12,8" Margin="4">
                                     <StackPanel HorizontalAlignment="Center">
-                                        <PathIcon Data="{StaticResource IconPressure}" Foreground="White" Width="22" Height="22"/>
-                                        <TextBlock Text="{Binding CurrentWeather.Pressure}"
-                                                  FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
-                                        <TextBlock Text="hPa" FontSize="12" Foreground="#DDFFFFFF" HorizontalAlignment="Center"/>
+                                        <PathIcon Data="{StaticResource IconPressure}" Foreground="{DynamicResource InfoBrush}" Width="18" Height="18"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Pressure}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                                        <TextBlock Text="hPa" FontSize="11" Foreground="{DynamicResource OnSurfaceVariantBrush}" HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
-                                <Border Background="#20FFFFFF" CornerRadius="12" Padding="14,10" Margin="4">
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="12" Padding="12,8" Margin="4">
                                     <StackPanel HorizontalAlignment="Center">
-                                        <PathIcon Data="{StaticResource IconVisibility}" Foreground="White" Width="22" Height="22"/>
-                                        <TextBlock Text="{Binding CurrentWeather.Visibility, StringFormat='{}{0:F1}'}"
-                                                  FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
-                                        <TextBlock Text="km" FontSize="12" Foreground="#DDFFFFFF" HorizontalAlignment="Center"/>
+                                        <PathIcon Data="{StaticResource IconVisibility}" Foreground="{DynamicResource WarningBrush}" Width="18" Height="18"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Visibility, StringFormat=&apos;{}{0:F1}&apos;}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                                        <TextBlock Text="km" FontSize="11" Foreground="{DynamicResource OnSurfaceVariantBrush}" HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </UniformGrid>
                         </StackPanel>
                     </Border>
-
-                    <!-- Card 2: 7-Day Forecast -->
-                    <Border Grid.Column="1" Grid.Row="0"
-                           Background="#28FFFFFF"
-                           CornerRadius="20"
-                           Padding="28"
-                           BoxShadow="0 4 20 0 #15000000">
+                    <Border Grid.Column="1" Grid.Row="0" IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowForecastCard}" Background="{DynamicResource SurfaceBrush}" CornerRadius="20" Padding="24" BorderBrush="{DynamicResource OutlineBrush}" BorderThickness="1">
+                        <StackPanel Spacing="14">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="10" Padding="8" Width="40" Height="40">
+                                    <PathIcon Data="{StaticResource IconCalendar}" Foreground="{DynamicResource PrimaryBrush}" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="6-Day Forecast" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}"/>
+                                    <TextBlock Text="Starting from tomorrow" FontSize="12" Foreground="{DynamicResource OnSurfaceVariantBrush}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,-15">
+                                <ItemsControl ItemsSource="{Binding Forecast}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="models:ForecastItem">
+                                            <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="12" Padding="12,10" Margin="0,4">
+                                                <Grid ColumnDefinitions="80,Auto,*,Auto">
+                                                    <TextBlock Grid.Column="0" Text="{Binding DateTime, StringFormat=&apos;{}{0:ddd}&apos;}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource OnSurfaceBrush}" VerticalAlignment="Center"/>
+                                                    <Border Grid.Column="1" Background="{DynamicResource SurfaceBrush}" CornerRadius="8" Padding="8" Margin="8,0">
+                                                        <Viewbox Width="22" Height="22">
+                                                            <PathIcon Data="{Binding Condition, Converter={StaticResource ConditionToIcon}}" Foreground="{DynamicResource PrimaryBrush}"/>
+                                                        </Viewbox>
+                                                    </Border>
+                                                    <TextBlock Grid.Column="2" Text="{Binding Condition}" FontSize="13" Foreground="{DynamicResource OnSurfaceBrush}" VerticalAlignment="Center" Margin="8,0"/>
+                                                    <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="6">
+                                                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="8" Padding="10,6" Width="70">
+                                                            <TextBlock Text="{Binding MaxTemp, Converter={StaticResource TempToString}}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                        </Border>
+                                                        <Border Background="{DynamicResource PrimaryContainerBrush}" CornerRadius="8" Padding="10,6" Width="70">
+                                                            <TextBlock Text="{Binding MinTemp, Converter={StaticResource TempToString}}" FontSize="13" Foreground="{DynamicResource OnPrimaryContainerBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                        </Border>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="1" IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowSunTimesCard}" Background="{DynamicResource SurfaceBrush}" CornerRadius="20" Padding="24" BorderBrush="{DynamicResource OutlineBrush}" BorderThickness="1">
                         <StackPanel Spacing="16">
-                            <StackPanel Orientation="Horizontal" Spacing="14">
-                                <Border Background="#25FFFFFF" CornerRadius="10" Padding="10">
-                                    <PathIcon Data="{StaticResource IconCalendar}" Foreground="White" Width="22" Height="22"/>
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="10" Padding="8" Width="40" Height="40">
+                                    <PathIcon Data="{StaticResource IconSunny}" Foreground="{DynamicResource WarningBrush}" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Border>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="7-Day Forecast" FontSize="22" FontWeight="Bold" Foreground="White"/>
-                                    <TextBlock Text="Extended outlook" FontSize="13" Foreground="#CCFFFFFF" Margin="0,4,0,0"/>
+                                    <TextBlock Text="Sun Times" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}"/>
+                                    <TextBlock Text="Daily cycle" FontSize="12" Foreground="{DynamicResource OnSurfaceVariantBrush}" Margin="0,2,0,0"/>
                                 </StackPanel>
                             </StackPanel>
-
-                            <ItemsControl ItemsSource="{Binding Forecast}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="models:ForecastItem">
-                                        <Border Background="#18FFFFFF" CornerRadius="12" Padding="14,12" Margin="0,6">
-                                            <Grid ColumnDefinitions="100,Auto,*,Auto">
-                                                <TextBlock Grid.Column="0" Text="{Binding DateTime, StringFormat='{}{0:ddd}'}"
-                                                          FontSize="16" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                                <Border Grid.Column="1" Background="#25FFFFFF" CornerRadius="10" Padding="10" Margin="10,0">
-                                                    <Viewbox Width="26" Height="26">
-                                                        <PathIcon Data="{Binding Condition, Converter={StaticResource ConditionToIcon}}" Foreground="White"/>
-                                                    </Viewbox>
-                                                </Border>
-                                                <TextBlock Grid.Column="2" Text="{Binding Condition}" FontSize="15" FontWeight="SemiBold"
-                                                          Foreground="White" VerticalAlignment="Center" Margin="10,0"/>
-                                                <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8">
-                                                    <Border Background="#25FFFFFF" CornerRadius="10" Padding="12,8">
-                                                        <TextBlock Text="{Binding MaxTemp, Converter={StaticResource TempToString}}"
-                                                                  FontSize="17" FontWeight="Bold" Foreground="White"/>
-                                                    </Border>
-                                                    <Border Background="#15FFFFFF" CornerRadius="10" Padding="12,8">
-                                                        <TextBlock Text="{Binding MinTemp, Converter={StaticResource TempToString}}"
-                                                                  FontSize="17" Foreground="#BBFFFFFF"/>
-                                                    </Border>
-                                                </StackPanel>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Card 3: Sun Times -->
-                    <Border Grid.Column="0" Grid.Row="1"
-                           Background="#28FFFFFF"
-                           CornerRadius="20"
-                           Padding="28"
-                           BoxShadow="0 4 20 0 #15000000">
-                        <StackPanel Spacing="20">
-                            <StackPanel Orientation="Horizontal" Spacing="14">
-                                <Border Background="#25FFFFFF" CornerRadius="10" Padding="10">
-                                    <PathIcon Data="{StaticResource IconSunny}" Foreground="White" Width="22" Height="22"/>
-                                </Border>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Sun Times" FontSize="22" FontWeight="Bold" Foreground="White"/>
-                                    <TextBlock Text="Daily cycle" FontSize="13" Foreground="#CCFFFFFF" Margin="0,4,0,0"/>
-                                </StackPanel>
-                            </StackPanel>
-
-                            <Border Background="#20FFFFFF" CornerRadius="14" Padding="18,14">
-                                <StackPanel Orientation="Horizontal" Spacing="14">
-                                    <Border Background="#25FFFFFF" CornerRadius="12" Padding="12">
-                                        <PathIcon Data="{StaticResource IconSunrise}" Foreground="White" Width="28" Height="28"/>
+                            <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="14" Padding="16,12">
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="10" Padding="10" Width="38" Height="38">
+                                        <PathIcon Data="{StaticResource IconSunrise}" Foreground="{DynamicResource PrimaryBrush}" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </Border>
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Sunrise" FontSize="14" Foreground="#DDFFFFFF" FontWeight="Medium"/>
-                                        <TextBlock Text="{Binding CurrentWeather.Sunrise, StringFormat='{}{0:HH:mm}'}"
-                                                  FontSize="28" FontWeight="Bold" Foreground="White" Margin="0,6,0,0"/>
+                                        <TextBlock Text="Sunrise" FontSize="12" Foreground="{DynamicResource OnSurfaceVariantBrush}" FontWeight="Medium"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Sunrise, StringFormat=&apos;{}{0:HH:mm}&apos;}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" Margin="0,4,0,0"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
-
-                            <Border Background="#20FFFFFF" CornerRadius="14" Padding="18,14">
-                                <StackPanel Orientation="Horizontal" Spacing="14">
-                                    <Border Background="#25FFFFFF" CornerRadius="12" Padding="12">
-                                        <PathIcon Data="{StaticResource IconSunset}" Foreground="White" Width="28" Height="28"/>
+                            <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="14" Padding="16,12">
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="10" Padding="10" Width="38" Height="38">
+                                        <PathIcon Data="{StaticResource IconSunset}" Foreground="{DynamicResource SecondaryBrush}" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </Border>
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Sunset" FontSize="14" Foreground="#DDFFFFFF" FontWeight="Medium"/>
-                                        <TextBlock Text="{Binding CurrentWeather.Sunset, StringFormat='{}{0:HH:mm}'}"
-                                                  FontSize="28" FontWeight="Bold" Foreground="White" Margin="0,6,0,0"/>
+                                        <TextBlock Text="Sunset" FontSize="12" Foreground="{DynamicResource OnSurfaceVariantBrush}" FontWeight="Medium"/>
+                                        <TextBlock Text="{Binding CurrentWeather.Sunset, StringFormat=&apos;{}{0:HH:mm}&apos;}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" Margin="0,4,0,0"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
                     </Border>
-
-                    <!-- Card 4: Animation Intensity -->
-                    <Border Grid.Column="1" Grid.Row="1"
-        Background="#28FFFFFF"
-        CornerRadius="20"
-        Padding="28"
-        BoxShadow="0 4 20 0 #15000000">
-    <StackPanel Spacing="16">
-        <!-- Header -->
-        <StackPanel Orientation="Horizontal" Spacing="14">
-            <Border Background="#25FFFFFF"
-                    CornerRadius="10"
-                    Padding="10">
-                <PathIcon Data="{StaticResource IconChart}"
-                          Foreground="White"
-                          Width="22"
-                          Height="22"/>
-            </Border>
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="24-Hour Forecast"
-                           FontSize="22"
-                           FontWeight="Bold"
-                           Foreground="White"/>
-                <TextBlock Text="Temperature trend"
-                           FontSize="13"
-                           Foreground="#CCFFFFFF"
-                           Margin="0,4,0,0"/>
-            </StackPanel>
-        </StackPanel>
-
-        <!-- Chart Container -->
-        <Border Background="#15FFFFFF"
-                CornerRadius="16"
-                Padding="16"
-                Height="280">
-            <Grid>
-                <!-- Actual Chart -->
-                <controls:SimpleLineChart 
-                    DataPoints="{Binding HourlyTemperatures}"
-                    Foreground="White"
-                    IsVisible="{Binding HourlyTemperatures, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                
-                <!-- Loading State -->
-                <Border Background="#15FFFFFF"
-                        CornerRadius="16"
-                        Padding="16"
-                        IsVisible="{Binding HourlyTemperatures, Converter={x:Static ObjectConverters.IsNull}}">
-                    <StackPanel VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Spacing="12">
-                        <ProgressBar IsIndeterminate="True"
-                                     Width="120"
-                                     Height="4"
-                                     Foreground="White"
-                                     BorderThickness="0"
-                                     Background="Transparent"/>
-                        <TextBlock Text="Loading hourly data..."
-                                   Foreground="White"
-                                   FontSize="14"
-                                   HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <!-- Error State -->
-                <Border Background="#20FF5555"
-                        CornerRadius="16"
-                        Padding="20"
-                        IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}">
-                    <StackPanel VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Spacing="12">
-                        <PathIcon Data="{StaticResource IconError}"
-                                  Foreground="White"
-                                  Width="32"
-                                  Height="32"
-                                  HorizontalAlignment="Center"/>
-                        <TextBlock Text="Failed to load hourly data"
-                                   Foreground="White"
-                                   FontSize="14"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding ErrorMessage}"
-                                   Foreground="#DDFFFFFF"
-                                   FontSize="12"
-                                   HorizontalAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Center"
-                                   MaxWidth="200"/>
-                    </StackPanel>
-                </Border>
-            </Grid>
-        </Border>
-
-        <!-- Statistics Summary -->
-        <UniformGrid Columns="3" Rows="1">
-            <Border Background="#15FFFFFF"
-                    CornerRadius="12"
-                    Padding="12,10"
-                    Margin="0,0,4,0">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="Min"
-                               FontSize="11"
-                               Foreground="#BBFFFFFF"
-                               HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding HourlyTemperatures, Converter={StaticResource MinTempConverter}}"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="0,4,0,0"/>
-                </StackPanel>
-            </Border>
-            
-            <Border Background="#15FFFFFF"
-                    CornerRadius="12"
-                    Padding="12,10"
-                    Margin="2,0">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="Avg"
-                               FontSize="11"
-                               Foreground="#BBFFFFFF"
-                               HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding HourlyTemperatures, Converter={StaticResource AvgTempConverter}}"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="0,4,0,0"/>
-                </StackPanel>
-            </Border>
-            
-            <Border Background="#15FFFFFF"
-                    CornerRadius="12"
-                    Padding="12,10"
-                    Margin="4,0,0,0">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="Max"
-                               FontSize="11"
-                               Foreground="#BBFFFFFF"
-                               HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding HourlyTemperatures, Converter={StaticResource MaxTempConverter}}"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="0,4,0,0"/>
-                </StackPanel>
-            </Border>
-        </UniformGrid>
-    </StackPanel>
-</Border>
-
+                    <Border Grid.Column="1" Grid.Row="1" IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowHourlyChart}" Background="{DynamicResource SurfaceBrush}" CornerRadius="20" Padding="24" BorderBrush="{DynamicResource OutlineBrush}" BorderThickness="1">
+                        <StackPanel Spacing="14">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="10" Padding="8" Width="40" Height="40">
+                                    <PathIcon Data="{StaticResource IconChart}" Foreground="{DynamicResource InfoBrush}" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="24-Hour Forecast" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}"/>
+                                    <TextBlock Text="Temperature trend" FontSize="12" Foreground="{DynamicResource OnSurfaceVariantBrush}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="16" Padding="12" Height="240">
+                                <Grid>
+                                    <controls:SimpleLineChart DataPoints="{Binding HourlyTemperatures}" Foreground="{DynamicResource PrimaryBrush}" IsVisible="{Binding HourlyTemperatures, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                                    <Border Background="Transparent" IsVisible="{Binding HourlyTemperatures, Converter={x:Static ObjectConverters.IsNull}}">
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="12">
+                                            <ProgressBar IsIndeterminate="True" Width="100" Height="3" Foreground="{DynamicResource PrimaryBrush}" BorderThickness="0" Background="Transparent"/>
+                                            <TextBlock Text="Loading chart..." Foreground="{DynamicResource OnSurfaceVariantBrush}" FontSize="12" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="Transparent" IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="12">
+                                            <PathIcon Data="{StaticResource IconError}" Foreground="{DynamicResource ErrorBrush}" Width="28" Height="28" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Failed to load chart" Foreground="{DynamicResource ErrorBrush}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            <UniformGrid Columns="3" Rows="1">
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="10" Padding="10,8" Margin="0,0,4,0">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="Min" FontSize="10" Foreground="{DynamicResource OnSurfaceVariantBrush}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding HourlyTemperatures, Converter={StaticResource MinTempConverter}}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="10" Padding="10,8" Margin="2,0">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="Avg" FontSize="10" Foreground="{DynamicResource OnSurfaceVariantBrush}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding HourlyTemperatures, Converter={StaticResource AvgTempConverter}}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="{DynamicResource SurfaceVariantBrush}" CornerRadius="10" Padding="10,8" Margin="4,0,0,0">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="Max" FontSize="10" Foreground="{DynamicResource OnSurfaceVariantBrush}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding HourlyTemperatures, Converter={StaticResource MaxTempConverter}}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource OnSurfaceBrush}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

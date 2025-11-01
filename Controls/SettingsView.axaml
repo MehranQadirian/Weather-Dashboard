@@ -1,0 +1,289 @@
+<UserControl x:Class="Weather.Dashboard.Avalonia.Controls.SettingsView" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:Weather.Dashboard.Avalonia.ViewModels" x:DataType="vm:SettingsViewModel" Background="Transparent">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.section-title">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+        <Style Selector="TextBlock.section-subtitle">
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+        </Style>
+        <Style Selector="Border.settings-card">
+            <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="BoxShadow" Value="0 4 20 0 #15000000"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.3"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Border.settings-card:pointerover">
+            <Setter Property="BoxShadow" Value="0 6 24 0 #20000000"/>
+        </Style>
+        <Style Selector="CheckBox.modern-checkbox">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="Margin" Value="0,8,0,0"/>
+        </Style>
+        <Style Selector="CheckBox.modern-checkbox:pointerover">
+            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+            <Setter Property="Margin" Value="0,8,0,0"/>
+        </Style>
+        <Style Selector="Border.theme-button">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource OutlineVariantBrush}"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+                    <ThicknessTransition Property="BorderThickness" Duration="0:0:0.2"/>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Border.theme-button:pointerover">
+            <Setter Property="RenderTransform" Value="scale(1.05)"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="3"/>
+        </Style>
+        <Style Selector="Border.theme-button.selected">
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="4"/>
+            <Setter Property="BoxShadow" Value="0 4 16 0 #40000000"/>
+        </Style>
+        <Style Selector="Border.theme-button TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Border.theme-button.light-theme TextBlock">
+            <Setter Property="Foreground" Value="#1F2937"/>
+        </Style>
+        <Style Selector="Border.theme-button.light-theme:pointerover TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+        </Style>
+        <Style Selector="Border.theme-button.dark-theme TextBlock">
+            <Setter Property="Foreground" Value="#F9FAFB"/>
+        </Style>
+        <Style Selector="Border.theme-button.dark-theme:pointerover TextBlock">
+            <Setter Property="Foreground" Value="#000000"/>
+        </Style>
+    </UserControl.Styles>
+    <Grid RowDefinitions="Auto,*,Auto" Background="{DynamicResource BackgroundBrush}">
+        <Border Grid.Row="0" Padding="24" BorderBrush="{DynamicResource OutlineVariantBrush}" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="Settings" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="Customize your weather dashboard experience" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <Button Grid.Column="1" Background="Transparent" BorderThickness="0" CornerRadius="12" Width="48" Height="48" Cursor="Hand" Click="CloseSettings_Click">
+                    <PathIcon Data="{StaticResource IconClose}" Foreground="{DynamicResource TextPrimaryBrush}" Width="20" Height="20"/>
+                </Button>
+            </Grid>
+        </Border>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20">
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20">
+                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Classes="settings-card">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border Background="{DynamicResource PrimaryContainerBrush}" CornerRadius="10" Padding="10">
+                                <PathIcon Data="{StaticResource IconChart}" Foreground="{DynamicResource PrimaryBrush}" Width="20" Height="20"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Classes="section-title" Text="Detail View Cards"/>
+                                <TextBlock Classes="section-subtitle" Text="Control card visibility"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,12">
+                            <CheckBox IsChecked="{Binding ShowCurrentWeatherCard}" Classes="modern-checkbox">
+                                <TextBlock Text="Current Weather Card" FontSize="14" FontWeight="Medium"/>
+                            </CheckBox>
+                        </Border>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,12">
+                            <CheckBox IsChecked="{Binding ShowForecastCard}" Classes="modern-checkbox">
+                                <TextBlock Text="7-Day Forecast Card" FontSize="14" FontWeight="Medium"/>
+                            </CheckBox>
+                        </Border>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,12">
+                            <CheckBox IsChecked="{Binding ShowSunTimesCard}" Classes="modern-checkbox">
+                                <TextBlock Text="Sun Times Card" FontSize="14" FontWeight="Medium"/>
+                            </CheckBox>
+                        </Border>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,12">
+                            <CheckBox IsChecked="{Binding ShowHourlyChart}" Classes="modern-checkbox">
+                                <TextBlock Text="24-Hour Chart Card" FontSize="14" FontWeight="Medium"/>
+                            </CheckBox>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="0" Classes="settings-card">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border Background="{DynamicResource SecondaryContainerBrush}" CornerRadius="10" Padding="10">
+                                <PathIcon Data="{StaticResource IconRefresh}" Foreground="{DynamicResource SecondaryBrush}" Width="20" Height="20"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Classes="section-title" Text="Auto Refresh"/>
+                                <TextBlock Classes="section-subtitle" Text="Update interval"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="14" Padding="16">
+                            <TextBox Text="{Binding RefreshRateMinutes}" Watermark="Minutes" FontSize="32" FontWeight="Bold" TextAlignment="Center" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </Border>
+                        <Slider Minimum="1" Maximum="120" Value="{Binding RefreshRateMinutes}" Foreground="{DynamicResource SecondaryBrush}" TickFrequency="5" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Minutes between automatic updates" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="0" Classes="settings-card">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border Background="{DynamicResource SuccessBrush}" CornerRadius="10" Padding="10" Opacity="0.9">
+                                <PathIcon Data="{StaticResource IconLocation}" Foreground="White" Width="20" Height="20"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Classes="section-title" Text="City Card Fields"/>
+                                <TextBlock Classes="section-subtitle" Text="Show/hide data"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,10">
+                            <CheckBox IsChecked="{Binding ShowTemperature}" Classes="modern-checkbox">
+                                <TextBlock Text="Temperature" FontSize="13" FontWeight="Medium"/>
+                            </CheckBox>
+                        </Border>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,10">
+                            <CheckBox IsChecked="{Binding ShowHumidity}" Classes="modern-checkbox">
+                                <TextBlock Text="Humidity" FontSize="13" FontWeight="Medium"/>
+                            </CheckBox>
+                        </Border>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,10">
+                            <CheckBox IsChecked="{Binding ShowWindSpeed}" Classes="modern-checkbox">
+                                <TextBlock Text="Wind Speed" FontSize="13" FontWeight="Medium"/>
+                            </CheckBox>
+                        </Border>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,10">
+                            <CheckBox IsChecked="{Binding ShowPressure}" Classes="modern-checkbox">
+                                <TextBlock Text="Pressure" FontSize="13" FontWeight="Medium"/>
+                            </CheckBox>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1" Classes="settings-card">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border Background="{DynamicResource WarningBrush}" CornerRadius="10" Padding="10" Opacity="0.9">
+                                <PathIcon Data="{StaticResource IconSunny}" Foreground="White" Width="20" Height="20"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Classes="section-title" Text="Weather Filters"/>
+                                <TextBlock Classes="section-subtitle" Text="Show/Hide filter bar"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,12">
+                            <CheckBox IsChecked="{Binding EnableWeatherFilters}" Classes="modern-checkbox">
+                                <StackPanel>
+                                    <TextBlock Text="Enable Weather Filters" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                    <TextBlock Text="Show filter bar with weather condition buttons" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </CheckBox>
+                        </Border>
+                        <Border Background="{DynamicResource PrimaryContainerBrush}" CornerRadius="10" Padding="12" MaxWidth="500">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <PathIcon Grid.Column="0" Data="{StaticResource IconInfo}" Foreground="{DynamicResource PrimaryBrush}" Width="16" Height="16" VerticalAlignment="Top" Margin="0,2,8,0"/>
+                                <TextBlock Grid.Column="1" Text="When disabled, the filter bar will be hidden and the settings button will appear in the footer." FontSize="11" Foreground="{DynamicResource OnPrimaryContainerBrush}" TextWrapping="Wrap" LineHeight="16" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="1" Classes="settings-card">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border Background="{DynamicResource InfoBrush}" CornerRadius="10" Padding="10" Opacity="0.9">
+                                <PathIcon Data="{StaticResource IconMoon}" Foreground="White" Width="20" Height="20"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Classes="section-title" Text="Theme Settings"/>
+                                <TextBlock Classes="section-subtitle" Text="Choose your theme"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="16,12">
+                            <CheckBox IsChecked="{Binding EnableDynamicTheme}" Classes="modern-checkbox">
+                                <TextBlock Text="Enable Circadian (Dynamic) Theme" FontSize="13" FontWeight="Medium"/>
+                            </CheckBox>
+                        </Border>
+                        <TextBlock Text="Or select a fixed theme:" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,8,0,4"/>
+                        <WrapPanel>
+                            <Border Classes="theme-button dark-theme" Classes.selected="{Binding SelectedThemeIndex, Converter={x:Static ObjectConverters.Equal}, ConverterParameter=0}" Background="#1E293B" BorderBrush="#CBD5E1">
+                                <Button Background="Transparent" BorderThickness="0" Width="76" Height="76" Command="{Binding SelectThemeCommand}">
+                                    <Button.CommandParameter>
+                                        <x:Int32>0</x:Int32>
+                                    </Button.CommandParameter>
+                                    <TextBlock Text="Deep Night" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Button>
+                            </Border>
+                            <Border Classes="theme-button dark-theme" Classes.selected="{Binding SelectedThemeIndex, Converter={x:Static ObjectConverters.Equal}, ConverterParameter=2}" Background="#3B82F6" BorderBrush="#3B82F6">
+                                <Button Background="Transparent" BorderThickness="0" Width="76" Height="76" Command="{Binding SelectThemeCommand}">
+                                    <Button.CommandParameter>
+                                        <x:Int32>2</x:Int32>
+                                    </Button.CommandParameter>
+                                    <TextBlock Text="Pre-Dawn" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Button>
+                            </Border>
+                            <Border Classes="theme-button dark-theme" Classes.selected="{Binding SelectedThemeIndex, Converter={x:Static ObjectConverters.Equal}, ConverterParameter=3}" Background="#F59E0B" BorderBrush="#F59E0B">
+                                <Button Background="Transparent" BorderThickness="0" Width="76" Height="76" Command="{Binding SelectThemeCommand}">
+                                    <Button.CommandParameter>
+                                        <x:Int32>3</x:Int32>
+                                    </Button.CommandParameter>
+                                    <TextBlock Text="Dawn" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Button>
+                            </Border>
+                            <Border Classes="theme-button light-theme" Classes.selected="{Binding SelectedThemeIndex, Converter={x:Static ObjectConverters.Equal}, ConverterParameter=4}" Background="#FBBF24" BorderBrush="#FBBF24">
+                                <Button Background="Transparent" BorderThickness="0" Width="76" Height="76" Command="{Binding SelectThemeCommand}">
+                                    <Button.CommandParameter>
+                                        <x:Int32>4</x:Int32>
+                                    </Button.CommandParameter>
+                                    <TextBlock Text="Morning" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Button>
+                            </Border>
+                            <Border Classes="theme-button dark-theme" Classes.selected="{Binding SelectedThemeIndex, Converter={x:Static ObjectConverters.Equal}, ConverterParameter=6}" Background="#06B6D4" BorderBrush="#06B6D4">
+                                <Button Background="Transparent" BorderThickness="0" Width="76" Height="76" Command="{Binding SelectThemeCommand}">
+                                    <Button.CommandParameter>
+                                        <x:Int32>6</x:Int32>
+                                    </Button.CommandParameter>
+                                    <TextBlock Text="Noon" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Button>
+                            </Border>
+                            <Border Classes="theme-button dark-theme" Classes.selected="{Binding SelectedThemeIndex, Converter={x:Static ObjectConverters.Equal}, ConverterParameter=10}" Background="#A78BFA" BorderBrush="#A78BFA">
+                                <Button Background="Transparent" BorderThickness="0" Width="76" Height="76" Command="{Binding SelectThemeCommand}">
+                                    <Button.CommandParameter>
+                                        <x:Int32>10</x:Int32>
+                                    </Button.CommandParameter>
+                                    <TextBlock Text="Evening" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Button>
+                            </Border>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+        <Border Grid.Row="2" Padding="24" BorderBrush="{DynamicResource OutlineVariantBrush}" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+                <Button Content="Reset to Defaults" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource OnPrimaryBrush}" Foreground="{DynamicResource PrimaryBrush}" CornerRadius="10" Padding="20,10" FontSize="14" FontWeight="Medium" Cursor="Hand" Click="Reset_Click"/>
+                <Button Content="Apply Changes" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource BackgroundBrush}" BorderThickness="0" CornerRadius="10" Padding="24,10" FontSize="14" FontWeight="Bold" Cursor="Hand" Click="Apply_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

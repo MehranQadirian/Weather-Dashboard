@@ -87,48 +87,56 @@ namespace Weather.Dashboard.Avalonia.ViewModels
         }
 
         public async Task LoadWeatherAsync()
+    {
+        IsLoading = true;
+        ErrorMessage = null;
+
+        try
         {
-            IsLoading = true;
-            ErrorMessage = null;
+            System.Diagnostics.Debug.WriteLine($"📊 Loading weather for {City.Name}...");
+            
+            CurrentWeather = await _weatherService.GetCurrentWeatherAsync(City.Lat, City.Lon);
+            System.Diagnostics.Debug.WriteLine($"✅ Current weather loaded: {CurrentWeather.Temperature}°C");
 
-            try
+            Forecast = await _weatherService.GetForecastAsync(City.Lat, City.Lon);
+            
+            System.Diagnostics.Debug.WriteLine($"📋 FORECAST COUNT: {Forecast?.Length ?? 0} days received");
+            if (Forecast != null)
             {
-                System.Diagnostics.Debug.WriteLine($"🔄 Loading weather for {City.Name}...");
-
-                CurrentWeather = await _weatherService.GetCurrentWeatherAsync(City.Lat, City.Lon);
-                System.Diagnostics.Debug.WriteLine($"✅ Current weather loaded: {CurrentWeather.Temperature}°C");
-
-                Forecast = await _weatherService.GetForecastAsync(City.Lat, City.Lon);
-                System.Diagnostics.Debug.WriteLine($"✅ Forecast loaded: {Forecast?.Length ?? 0} days");
-
-                var hourlyData = await _weatherService.GetHourlyTemperaturesAsync(City.Lat, City.Lon);
-                
-                if (hourlyData != null && hourlyData.Length > 0)
+                for (int i = 0; i < Forecast.Length; i++)
                 {
-                    HourlyTemperatures = new List<double>(hourlyData);
-                    System.Diagnostics.Debug.WriteLine($"✅ Hourly temperatures loaded: {HourlyTemperatures.Count} points - Range: {HourlyTemperatures.Min():F1}°C to {HourlyTemperatures.Max():F1}°C");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("⚠️ No hourly data received from API");
-                    HourlyTemperatures = null;
+                    System.Diagnostics.Debug.WriteLine(
+                        $"   [{i}] {Forecast[i].DateTime:yyyy-MM-dd dddd} - {Forecast[i].Condition} - Max: {Forecast[i].MaxTemp}°C, Min: {Forecast[i].MinTemp}°C");
                 }
             }
-            catch (Exception ex)
+            
+            System.Diagnostics.Debug.WriteLine($"✅ Forecast loaded: {Forecast?.Length ?? 0} days");
+
+            var hourlyData = await _weatherService.GetHourlyTemperaturesAsync(City.Lat, City.Lon);
+            if (hourlyData != null && hourlyData.Length > 0)
             {
-                ErrorMessage = "Unable to connect. Check your internet.";
-                System.Diagnostics.Debug.WriteLine($"❌ LoadWeatherAsync failed for {City.Name}: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"   Stack trace: {ex.StackTrace}");
-                
-                CurrentWeather = null;
-                Forecast = null;
+                HourlyTemperatures = new List<double>(hourlyData);
+                System.Diagnostics.Debug.WriteLine($"✅ Hourly temperatures loaded: {HourlyTemperatures.Count} points");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("⚠️ No hourly data received from API");
                 HourlyTemperatures = null;
             }
-            finally
-            {
-                IsLoading = false;
-            }
         }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Unable to connect. Check your internet.";
+            System.Diagnostics.Debug.WriteLine($"❌ LoadWeatherAsync failed: {ex.Message}");
+            CurrentWeather = null;
+            Forecast = null;
+            HourlyTemperatures = null;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
 
         private void UpdateAnimationParameters()
         {

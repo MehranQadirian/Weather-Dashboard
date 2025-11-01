@@ -13,8 +13,6 @@ namespace Weather.Dashboard.Avalonia.Services
         public void UpdateIntensity(AnimationState state, double intensity)
         {
             state.Intensity = System.Math.Max(0, System.Math.Min(1, intensity));
-
-            // Adjust particle count based on intensity
             switch (state.Condition)
             {
                 case WeatherCondition.Rainy:

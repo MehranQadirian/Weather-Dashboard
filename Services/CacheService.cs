@@ -25,7 +25,6 @@ namespace Weather.Dashboard.Avalonia.Services
 
         public Task<T> GetAsync<T>(string key) where T : class
         {
-            // Check memory cache first
             if (_memoryCache.TryGetValue(key, out var entry))
             {
                 if (entry.ExpiresAt > DateTime.Now)
@@ -34,8 +33,6 @@ namespace Weather.Dashboard.Avalonia.Services
                 }
                 _memoryCache.Remove(key);
             }
-
-            // Check file cache
             string filePath = GetCacheFilePath(key);
             if (File.Exists(filePath))
             {
@@ -58,9 +55,7 @@ namespace Weather.Dashboard.Avalonia.Services
                     File.Delete(filePath);
                 }
                 catch
-                {
-                    // Ignore cache errors
-                }
+                { }
             }
 
             return Task.FromResult<T>(null);
@@ -69,15 +64,11 @@ namespace Weather.Dashboard.Avalonia.Services
         public Task SetAsync<T>(string key, T value, int ttlMinutes) where T : class
         {
             var expiresAt = DateTime.Now.AddMinutes(ttlMinutes);
-
-            // Set in memory
             _memoryCache[key] = new CacheEntry
             {
                 Value = value,
                 ExpiresAt = expiresAt
             };
-
-            // Save to file
             try
             {
                 var entry = new CacheEntry
@@ -90,9 +81,7 @@ namespace Weather.Dashboard.Avalonia.Services
                 File.WriteAllText(GetCacheFilePath(key), json);
             }
             catch
-            {
-                // Ignore cache write errors
-            }
+            { }
 
             return Task.CompletedTask;
         }

@@ -99,21 +99,21 @@ namespace Weather.Dashboard.Avalonia.Services
             {
                 CircadianPeriod.DeepNight => new ColorPalette
                 {
-                    Primary = Color.FromRgb(139, 92, 246),        // Soft Purple
+                    Primary = Color.FromRgb(139, 92, 246),
                     OnPrimary = Color.FromRgb(76, 29, 149),
                     PrimaryContainer = Color.FromRgb(59, 33, 108),
                     OnPrimaryContainer = Color.FromRgb(216, 180, 254),
                     
-                    Secondary = Color.FromRgb(96, 165, 250),      // Soft Blue
+                    Secondary = Color.FromRgb(96, 165, 250),
                     OnSecondary = Color.FromRgb(30, 58, 138),
                     SecondaryContainer = Color.FromRgb(30, 64, 175),
                     
-                    Surface = Color.FromRgb(17, 24, 39),          // Deep Charcoal
+                    Surface = Color.FromRgb(17, 24, 39),
                     OnSurface = Color.FromRgb(229, 231, 235),
                     SurfaceVariant = Color.FromRgb(31, 41, 55),
                     OnSurfaceVariant = Color.FromRgb(209, 213, 219),
                     
-                    Background = Color.FromRgb(3, 7, 18),         // Almost Black
+                    Background = Color.FromRgb(3, 7, 18),
                     OnBackground = Color.FromRgb(243, 244, 246),
                     
                     Outline = Color.FromRgb(55, 65, 81),
@@ -475,33 +475,47 @@ namespace Weather.Dashboard.Avalonia.Services
 
         private void ApplyPalette(IResourceDictionary resources, ColorPalette palette)
         {
-            resources["PrimaryBrush"] = new SolidColorBrush(palette.Primary);
-            resources["OnPrimaryBrush"] = new SolidColorBrush(palette.OnPrimary);
-            resources["PrimaryContainerBrush"] = new SolidColorBrush(palette.PrimaryContainer);
-            resources["OnPrimaryContainerBrush"] = new SolidColorBrush(palette.OnPrimaryContainer);
+            ApplyBrush(resources, "PrimaryBrush", palette.Primary);
+            ApplyBrush(resources, "OnPrimaryBrush", palette.OnPrimary);
+            ApplyBrush(resources, "PrimaryContainerBrush", palette.PrimaryContainer);
+            ApplyBrush(resources, "OnPrimaryContainerBrush", palette.OnPrimaryContainer);
             
-            resources["SecondaryBrush"] = new SolidColorBrush(palette.Secondary);
-            resources["OnSecondaryBrush"] = new SolidColorBrush(palette.OnSecondary);
-            resources["SecondaryContainerBrush"] = new SolidColorBrush(palette.SecondaryContainer);
+            ApplyBrush(resources, "SecondaryBrush", palette.Secondary);
+            ApplyBrush(resources, "OnSecondaryBrush", palette.OnSecondary);
+            ApplyBrush(resources, "SecondaryContainerBrush", palette.SecondaryContainer);
             
-            resources["SurfaceBrush"] = new SolidColorBrush(palette.Surface);
-            resources["OnSurfaceBrush"] = new SolidColorBrush(palette.OnSurface);
-            resources["SurfaceVariantBrush"] = new SolidColorBrush(palette.SurfaceVariant);
-            resources["OnSurfaceVariantBrush"] = new SolidColorBrush(palette.OnSurfaceVariant);
+            ApplyBrush(resources, "SurfaceBrush", palette.Surface);
+            ApplyBrush(resources, "OnSurfaceBrush", palette.OnSurface);
+            ApplyBrush(resources, "SurfaceVariantBrush", palette.SurfaceVariant);
+            ApplyBrush(resources, "OnSurfaceVariantBrush", palette.OnSurfaceVariant);
             
-            resources["BackgroundBrush"] = new SolidColorBrush(palette.Background);
-            resources["OnBackgroundBrush"] = new SolidColorBrush(palette.OnBackground);
+            ApplyBrush(resources, "BackgroundBrush", palette.Background);
+            ApplyBrush(resources, "OnBackgroundBrush", palette.OnBackground);
             
-            resources["OutlineBrush"] = new SolidColorBrush(palette.Outline);
-            resources["OutlineVariantBrush"] = new SolidColorBrush(palette.OutlineVariant);
+            ApplyBrush(resources, "OutlineBrush", palette.Outline);
+            ApplyBrush(resources, "OutlineVariantBrush", palette.OutlineVariant);
             
-            resources["ErrorBrush"] = new SolidColorBrush(palette.Error);
-            resources["SuccessBrush"] = new SolidColorBrush(palette.Success);
-            resources["WarningBrush"] = new SolidColorBrush(palette.Warning);
-            resources["InfoBrush"] = new SolidColorBrush(palette.Info);
+            ApplyBrush(resources, "ErrorBrush", palette.Error);
+            ApplyBrush(resources, "SuccessBrush", palette.Success);
+            ApplyBrush(resources, "WarningBrush", palette.Warning);
+            ApplyBrush(resources, "InfoBrush", palette.Info);
             
-            resources["TextPrimaryBrush"] = new SolidColorBrush(palette.TextPrimary);
-            resources["TextSecondaryBrush"] = new SolidColorBrush(palette.TextSecondary);
+            ApplyBrush(resources, "TextPrimaryBrush", palette.TextPrimary);
+            ApplyBrush(resources, "TextSecondaryBrush", palette.TextSecondary);
+        }
+
+        private void ApplyBrush(IResourceDictionary resources, string key, Color color)
+        {
+            try
+            {
+                resources[key] = new SolidColorBrush(color);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Failed to apply brush '{key}': {ex.Message}");
+                // Fallback to default color
+                resources[key] = new SolidColorBrush(Colors.Gray);
+            }
         }
 
         private class ColorPalette

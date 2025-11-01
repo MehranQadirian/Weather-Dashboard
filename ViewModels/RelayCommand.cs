@@ -3,9 +3,6 @@ using System.Windows.Input;
 
 namespace Weather.Dashboard.Avalonia.ViewModels
 {
-    /// <summary>
-    /// ✅ Avalonia-compatible RelayCommand (بدون CommandManager)
-    /// </summary>
     public class RelayCommand : ICommand
     {
         private readonly Action<object?> _execute;
@@ -32,18 +29,12 @@ namespace Weather.Dashboard.Avalonia.ViewModels
             }
         }
 
-        /// <summary>
-        /// فراخوانی دستی CanExecuteChanged (برای Avalonia)
-        /// </summary>
         public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    /// <summary>
-    /// ✅ Generic RelayCommand
-    /// </summary>
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T?> _execute;
@@ -66,7 +57,21 @@ namespace Weather.Dashboard.Avalonia.ViewModels
         {
             if (CanExecute(parameter))
             {
-                _execute((T?)parameter);
+                try
+                {
+                    if (typeof(T) == typeof(int) && parameter is string s)
+                    {
+                        _execute((T?)(object)int.Parse(s));
+                    }
+                    else
+                    {
+                        _execute((T?)parameter);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"⚠️ RelayCommand Execute cast error: {ex.Message}");
+                }
             }
         }
 

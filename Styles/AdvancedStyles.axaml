@@ -1,22 +1,16 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="Border.elevated-1">
         <Setter Property="BoxShadow" Value="0 1 3 0 #0F000000, 0 1 2 0 #0D000000"/>
     </Style>
-
     <Style Selector="Border.elevated-2">
         <Setter Property="BoxShadow" Value="0 4 6 -1 #0F000000, 0 2 4 -1 #0A000000"/>
     </Style>
-
     <Style Selector="Border.elevated-3">
         <Setter Property="BoxShadow" Value="0 10 15 -3 #14000000, 0 4 6 -2 #0A000000"/>
     </Style>
-
     <Style Selector="Border.elevated-4">
         <Setter Property="BoxShadow" Value="0 20 25 -5 #14000000, 0 10 10 -5 #0A000000"/>
     </Style>
-
     <Style Selector="Border.glass">
         <Setter Property="Background">
             <SolidColorBrush Color="#FFFFFF" Opacity="0.7"/>
@@ -27,7 +21,6 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BoxShadow" Value="0 8 32 0 #1A000000"/>
     </Style>
-
     <Style Selector="Border.frosted">
         <Setter Property="Background">
             <SolidColorBrush Color="#000000" Opacity="0.05"/>
@@ -38,7 +31,6 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="ClipToBounds" Value="True"/>
     </Style>
-
     <Style Selector="ProgressBar.modern">
         <Setter Property="Height" Value="4"/>
         <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
@@ -46,91 +38,51 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="CornerRadius" Value="2"/>
     </Style>
-
     <Style Selector="Slider.modern">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
         <Setter Property="Height" Value="32"/>
     </Style>
-
     <Style Selector="CheckBox.modern">
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid ColumnDefinitions="Auto,*">
-                    <Border Name="PART_Border"
-                            Grid.Column="0"
-                            Width="20"
-                            Height="20"
-                            Background="{DynamicResource SurfaceVariantBrush}"
-                            BorderBrush="{DynamicResource OutlineBrush}"
-                            BorderThickness="2"
-                            CornerRadius="4"
-                            Margin="0,0,8,0">
-                        <Path Name="PART_Check"
-                              Data="M4,10 L8,14 L16,6"
-                              Stroke="{DynamicResource OnPrimaryBrush}"
-                              StrokeThickness="2"
-                              StrokeLineCap="Round"
-                              StrokeJoin="Round"
-                              IsVisible="False"/>
+                    <Border Name="PART_Border" Grid.Column="0" Width="20" Height="20" Background="{DynamicResource SurfaceVariantBrush}" BorderBrush="{DynamicResource OutlineBrush}" BorderThickness="2" CornerRadius="4" Margin="0,0,8,0">
+                        <Path Name="PART_Check" Data="M4,10 L8,14 L16,6" Stroke="{DynamicResource OnPrimaryBrush}" StrokeThickness="2" StrokeLineCap="Round" StrokeJoin="Round" IsVisible="False"/>
                     </Border>
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                    Grid.Column="1"
-                                    Content="{TemplateBinding Content}"
-                                    VerticalAlignment="Center"/>
+                    <ContentPresenter Name="PART_ContentPresenter" Grid.Column="1" Content="{TemplateBinding Content}" VerticalAlignment="Center"/>
                 </Grid>
             </ControlTemplate>
         </Setter>
     </Style>
-
     <Style Selector="CheckBox.modern:checked /template/ Border#PART_Border">
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
     </Style>
-
     <Style Selector="CheckBox.modern:checked /template/ Path#PART_Check">
         <Setter Property="IsVisible" Value="True"/>
     </Style>
-
     <Style Selector="RadioButton.modern">
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid ColumnDefinitions="Auto,*">
-                    <Border Name="PART_Border"
-                            Grid.Column="0"
-                            Width="20"
-                            Height="20"
-                            Background="{DynamicResource SurfaceVariantBrush}"
-                            BorderBrush="{DynamicResource OutlineBrush}"
-                            BorderThickness="2"
-                            CornerRadius="10"
-                            Margin="0,0,8,0">
-                        <Ellipse Name="PART_Dot"
-                                Width="10"
-                                Height="10"
-                                Fill="{DynamicResource OnPrimaryBrush}"
-                                IsVisible="False"/>
+                    <Border Name="PART_Border" Grid.Column="0" Width="20" Height="20" Background="{DynamicResource SurfaceVariantBrush}" BorderBrush="{DynamicResource OutlineBrush}" BorderThickness="2" CornerRadius="10" Margin="0,0,8,0">
+                        <Ellipse Name="PART_Dot" Width="10" Height="10" Fill="{DynamicResource OnPrimaryBrush}" IsVisible="False"/>
                     </Border>
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                    Grid.Column="1"
-                                    Content="{TemplateBinding Content}"
-                                    VerticalAlignment="Center"/>
+                    <ContentPresenter Name="PART_ContentPresenter" Grid.Column="1" Content="{TemplateBinding Content}" VerticalAlignment="Center"/>
                 </Grid>
             </ControlTemplate>
         </Setter>
     </Style>
-
     <Style Selector="RadioButton.modern:checked /template/ Border#PART_Border">
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
     </Style>
-
     <Style Selector="RadioButton.modern:checked /template/ Ellipse#PART_Dot">
         <Setter Property="IsVisible" Value="True"/>
     </Style>
-
     <Style Selector="ComboBox.modern">
         <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
@@ -140,43 +92,35 @@
         <Setter Property="Padding" Value="16,12"/>
         <Setter Property="MinHeight" Value="48"/>
     </Style>
-
     <Style Selector="ComboBox.modern:focus">
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="BorderThickness" Value="2"/>
     </Style>
-
     <Style Selector="ComboBox.modern:pointerover">
         <Setter Property="BorderBrush" Value="{DynamicResource OnSurfaceBrush}"/>
     </Style>
-
     <Style Selector="ListBox.modern">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
-
     <Style Selector="ListBoxItem.modern">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="16,12"/>
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="Margin" Value="0,2"/>
     </Style>
-
     <Style Selector="ListBoxItem.modern:pointerover">
         <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
     </Style>
-
     <Style Selector="ListBoxItem.modern:selected">
         <Setter Property="Background" Value="{DynamicResource PrimaryContainerBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource OnPrimaryContainerBrush}"/>
     </Style>
-
     <Style Selector="Separator.modern">
         <Setter Property="Background" Value="{DynamicResource OutlineVariantBrush}"/>
         <Setter Property="Height" Value="1"/>
         <Setter Property="Margin" Value="0,8"/>
     </Style>
-
     <Style Selector="ToolTip">
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
@@ -185,14 +129,11 @@
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="Padding" Value="12,8"/>
         <Setter Property="FontSize" Value="12"/>
-        
     </Style>
-
     <Style Selector="Menu">
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
     </Style>
-
     <Style Selector="MenuItem">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
@@ -200,21 +141,17 @@
         <Setter Property="CornerRadius" Value="6"/>
         <Setter Property="Margin" Value="4,2"/>
     </Style>
-
     <Style Selector="MenuItem:pointerover">
         <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
     </Style>
-
     <Style Selector="MenuItem:selected">
         <Setter Property="Background" Value="{DynamicResource PrimaryContainerBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource OnPrimaryContainerBrush}"/>
     </Style>
-
     <Style Selector="TabControl.modern">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
-
     <Style Selector="TabItem.modern">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource OnSurfaceVariantBrush}"/>
@@ -223,41 +160,33 @@
         <Setter Property="BorderThickness" Value="0,0,0,2"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
     </Style>
-
     <Style Selector="TabItem.modern:pointerover">
         <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
     </Style>
-
     <Style Selector="TabItem.modern:selected">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
     </Style>
-
     <Style Selector="Expander.modern">
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource OutlineBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="12"/>
     </Style>
-
     <Style Selector="TreeView.modern">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
-
     <Style Selector="TreeViewItem.modern">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="8"/>
         <Setter Property="CornerRadius" Value="6"/>
     </Style>
-
     <Style Selector="TreeViewItem.modern:pointerover">
         <Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
     </Style>
-
     <Style Selector="TreeViewItem.modern:selected">
         <Setter Property="Background" Value="{DynamicResource PrimaryContainerBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource OnPrimaryContainerBrush}"/>
     </Style>
-
 </Styles>

@@ -38,8 +38,6 @@ namespace Weather.Dashboard.Avalonia.Controls
             InitializeComponent();
             InitializeTooltip();
             _dataPoints = new List<(Ellipse, Ellipse, double, int, double, double)>();
-            
-            // Add pointer moved event to canvas for smart tooltip
             ChartCanvas.PointerMoved += OnCanvasPointerMoved;
             ChartCanvas.PointerExited += OnCanvasPointerExited;
         }
@@ -67,13 +65,13 @@ namespace Weather.Dashboard.Avalonia.Controls
                 CornerRadius = new CornerRadius(16),
                 Padding = new Thickness(18, 14),
                 Child = _tooltipContent,
-                ClipToBounds = true // ✅ اضافه شد تا محتوا از گوشه‌ها بیرون نزند
+                ClipToBounds = true
             };
 
             _tooltipBorder = new Border
             {
                 Background = Brushes.Transparent,
-                CornerRadius = new CornerRadius(16), // ✅ همان radius گوشه‌ها
+                CornerRadius = new CornerRadius(16),
                 BoxShadow = new BoxShadows(
                     new BoxShadow
                     {
@@ -84,7 +82,7 @@ namespace Weather.Dashboard.Avalonia.Controls
                     }),
                 Child = contentBorder,
                 Opacity = 0,
-                ClipToBounds = true // ✅ اضافه شد
+                ClipToBounds = true
             };
 
             _tooltip = new Popup
@@ -166,7 +164,7 @@ namespace Weather.Dashboard.Avalonia.Controls
             }
         }
 
-        private void DrawFillArea(List<double> points, double width, double height, double padding, 
+        private void DrawFillArea(List<double> points, double width, double height, double padding,
             double minValue, double range, double stepX)
         {
             var fillPoints = new List<Point>();
@@ -175,8 +173,8 @@ namespace Weather.Dashboard.Avalonia.Controls
             for (int i = 0; i < points.Count; i++)
             {
                 double x = i * stepX;
-                double y = padding + (height - 2 * padding) - 
-                    ((points[i] - minValue) / range * (height - 2 * padding));
+                double y = padding + (height - 2 * padding) -
+                           ((points[i] - minValue) / range * (height - 2 * padding));
                 fillPoints.Add(new Point(x, y));
             }
 
@@ -199,15 +197,15 @@ namespace Weather.Dashboard.Avalonia.Controls
             ChartCanvas.Children.Add(fillPolygon);
         }
 
-        private void DrawLine(List<double> points, double height, double padding, 
+        private void DrawLine(List<double> points, double height, double padding,
             double minValue, double range, double stepX)
         {
             var polylinePoints = new List<Point>();
             for (int i = 0; i < points.Count; i++)
             {
                 double x = i * stepX;
-                double y = padding + (height - 2 * padding) - 
-                    ((points[i] - minValue) / range * (height - 2 * padding));
+                double y = padding + (height - 2 * padding) -
+                           ((points[i] - minValue) / range * (height - 2 * padding));
                 polylinePoints.Add(new Point(x, y));
             }
 
@@ -222,7 +220,7 @@ namespace Weather.Dashboard.Avalonia.Controls
             ChartCanvas.Children.Add(polyline);
         }
 
-        private void DrawDataPoints(List<double> points, double height, double padding, 
+        private void DrawDataPoints(List<double> points, double height, double padding,
             double minValue, double range, double stepX)
         {
             var now = DateTime.Now;
@@ -230,8 +228,8 @@ namespace Weather.Dashboard.Avalonia.Controls
             for (int i = 0; i < points.Count; i++)
             {
                 double x = i * stepX;
-                double y = padding + (height - 2 * padding) - 
-                    ((points[i] - minValue) / range * (height - 2 * padding));
+                double y = padding + (height - 2 * padding) -
+                           ((points[i] - minValue) / range * (height - 2 * padding));
 
                 var outerCircle = new Ellipse
                 {
@@ -309,8 +307,6 @@ namespace Weather.Dashboard.Avalonia.Controls
             if (_dataPoints.Count == 0) return;
 
             var position = e.GetPosition(ChartCanvas);
-            
-            // Find the closest point to mouse position
             double minDistance = double.MaxValue;
             int closestIndex = -1;
 
@@ -318,7 +314,7 @@ namespace Weather.Dashboard.Avalonia.Controls
             {
                 var point = _dataPoints[i];
                 double distance = Math.Sqrt(
-                    Math.Pow(position.X - point.x, 2) + 
+                    Math.Pow(position.X - point.x, 2) +
                     Math.Pow(position.Y - point.y, 2)
                 );
 
@@ -329,12 +325,10 @@ namespace Weather.Dashboard.Avalonia.Controls
                 }
             }
 
-            // Only show tooltip if mouse is within reasonable distance (e.g., 50 pixels)
             if (minDistance < 50 && closestIndex != -1)
             {
                 if (_currentHoveredIndex != closestIndex)
                 {
-                    // Reset previous point if different
                     if (_currentHoveredIndex >= 0 && _currentHoveredIndex < _dataPoints.Count)
                     {
                         var prevPoint = _dataPoints[_currentHoveredIndex];
@@ -344,7 +338,7 @@ namespace Weather.Dashboard.Avalonia.Controls
 
                     _currentHoveredIndex = closestIndex;
                     var currentPoint = _dataPoints[closestIndex];
-                    
+
                     ShowTooltip(currentPoint.temp, currentPoint.index, DateTime.Now, currentPoint.x, currentPoint.y);
                     AnimatePointScale(currentPoint.circle, 1.3);
                     AnimatePointScale(currentPoint.outer, 1.5);
@@ -352,7 +346,6 @@ namespace Weather.Dashboard.Avalonia.Controls
             }
             else
             {
-                // Mouse too far from any point
                 if (_currentHoveredIndex >= 0)
                 {
                     var prevPoint = _dataPoints[_currentHoveredIndex];
@@ -372,6 +365,7 @@ namespace Weather.Dashboard.Avalonia.Controls
                 AnimatePointScale(prevPoint.circle, 1.0);
                 AnimatePointScale(prevPoint.outer, 1.0);
             }
+
             _currentHoveredIndex = -1;
             HideTooltip();
         }
@@ -381,7 +375,7 @@ namespace Weather.Dashboard.Avalonia.Controls
             _tooltipContent.Children.Clear();
 
             var timeOffset = baseTime.AddHours(index);
-            
+
             var timeIcon = new TextBlock
             {
                 Text = "🕐",
@@ -459,17 +453,17 @@ namespace Weather.Dashboard.Avalonia.Controls
             _tooltipBorder.Opacity = 0;
             _tooltipBorder.RenderTransform = new ScaleTransform(0.9, 0.9);
             _tooltipBorder.RenderTransformOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative);
-    
+
             var opacityTransition = new DoubleTransition
             {
                 Property = Border.OpacityProperty,
                 Duration = TimeSpan.FromMilliseconds(200),
                 Easing = new CubicEaseOut()
             };
-    
+
             _tooltipBorder.Transitions = new Transitions { opacityTransition };
             _tooltipBorder.Opacity = 1.0;
-    
+
             await AnimateScale(_tooltipBorder, 0.9, 1.0, 200);
         }
 
@@ -482,19 +476,19 @@ namespace Weather.Dashboard.Avalonia.Controls
         private async void HideTooltip()
         {
             if (!_tooltip.IsOpen) return;
-            
+
             await AnimateScale(_tooltipBorder, 1.0, 0.9, 150);
-    
+
             var opacityTransition = new DoubleTransition
             {
                 Property = Border.OpacityProperty,
                 Duration = TimeSpan.FromMilliseconds(150),
                 Easing = new CubicEaseIn()
             };
-    
+
             _tooltipBorder.Transitions = new Transitions { opacityTransition };
             _tooltipBorder.Opacity = 0;
-    
+
             await Task.Delay(150);
             _tooltip.IsOpen = false;
         }
@@ -503,7 +497,7 @@ namespace Weather.Dashboard.Avalonia.Controls
         {
             var steps = 20;
             var delay = durationMs / steps;
-    
+
             for (int i = 0; i <= steps; i++)
             {
                 var progress = (double)i / steps;

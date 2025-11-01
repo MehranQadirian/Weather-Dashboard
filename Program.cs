@@ -8,8 +8,20 @@ namespace Weather.Dashboard.Avalonia
         [STAThread]
         public static void Main(string[] args)
         {
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("🚀 Application starting...");
+        
+                BuildAvaloniaApp()
+                    .StartWithClassicDesktopLifetime(args);  
+            
+                System.Diagnostics.Debug.WriteLine("✅ Application closed normally");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Fatal error: {ex.Message}");
+                throw;
+            }
         }
 
         public static AppBuilder BuildAvaloniaApp()

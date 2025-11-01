@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Weather.Dashboard.Avalonia.Models;
 using Weather.Dashboard.Avalonia.Services;
@@ -16,8 +17,142 @@ namespace Weather.Dashboard.Avalonia.ViewModels
         private readonly IWeatherApiService _weatherService;
         private readonly IAnimationService _animationService;
         private readonly IStorageService _storageService;
+        private readonly ISettingsService _settingsService;
         private System.Threading.CancellationTokenSource _searchCts;
+        private DispatcherTimer _refreshTimer;
+
         private string _currentPeriod;
+
+        private bool _showCurrentWeatherCard;
+        private bool _showForecastCard;
+        private bool _showSunTimesCard;
+        private bool _showHourlyChart;
+
+        private bool _showTemperature;
+        private bool _showHumidity;
+        private bool _showWindSpeed;
+        private bool _showPressure;
+
+        private int _refreshRateMinutes = 10;
+        private bool _isFilterBarVisible;
+        private int _cardsGridRow = 2;
+        private int _cardsGridRowSpan = 1;
+        private bool _enableWeatherFilters;
+
+        public bool EnableWeatherFilters
+        {
+            get => _enableWeatherFilters;
+            set
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"⚙️ EnableWeatherFilters setter called: {_enableWeatherFilters} → {value}");
+
+                if (SetProperty(ref _enableWeatherFilters, value))
+                {
+                    System.Diagnostics.Debug.WriteLine($"✅ EnableWeatherFilters changed to: {value}");
+                    UpdateUILayout();
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"⚠️ EnableWeatherFilters NOT changed (same value)");
+                }
+            }
+        }
+
+        public bool IsFilterBarVisible
+        {
+            get => _isFilterBarVisible;
+            set
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"⚙️ IsFilterBarVisible setter called: {_isFilterBarVisible} → {value}");
+
+                if (SetProperty(ref _isFilterBarVisible, value))
+                {
+                    System.Diagnostics.Debug.WriteLine($"✅ IsFilterBarVisible changed to: {value}");
+                    UpdateCardsGridPosition();
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"⚠️ IsFilterBarVisible NOT changed (same value: {value})");
+                }
+            }
+        }
+
+        public int CardsGridRow
+        {
+            get => _cardsGridRow;
+            set => SetProperty(ref _cardsGridRow, value);
+        }
+
+        public int CardsGridRowSpan
+        {
+            get => _cardsGridRowSpan;
+            set => SetProperty(ref _cardsGridRowSpan, value);
+        }
+
+
+        public bool ShowCurrentWeatherCard
+        {
+            get => _showCurrentWeatherCard;
+            set => SetProperty(ref _showCurrentWeatherCard, value);
+        }
+
+        public bool ShowForecastCard
+        {
+            get => _showForecastCard;
+            set => SetProperty(ref _showForecastCard, value);
+        }
+
+        public bool ShowSunTimesCard
+        {
+            get => _showSunTimesCard;
+            set => SetProperty(ref _showSunTimesCard, value);
+        }
+
+        public bool ShowHourlyChart
+        {
+            get => _showHourlyChart;
+            set => SetProperty(ref _showHourlyChart, value);
+        }
+
+        public bool ShowTemperature
+        {
+            get => _showTemperature;
+            set => SetProperty(ref _showTemperature, value);
+        }
+
+        public bool ShowHumidity
+        {
+            get => _showHumidity;
+            set => SetProperty(ref _showHumidity, value);
+        }
+
+        public bool ShowWindSpeed
+        {
+            get => _showWindSpeed;
+            set => SetProperty(ref _showWindSpeed, value);
+        }
+
+        public bool ShowPressure
+        {
+            get => _showPressure;
+            set => SetProperty(ref _showPressure, value);
+        }
+
+        public int RefreshRateMinutes
+        {
+            get => _refreshRateMinutes;
+            set
+            {
+                if (SetProperty(ref _refreshRateMinutes, Math.Max(1, Math.Min(120, value))))
+                {
+                    UpdateRefreshTimer();
+                }
+            }
+        }
+
+        public RelayCommand OpenSettingsCommand { get; }
 
         public string CurrentPeriod
         {
@@ -135,21 +270,36 @@ namespace Weather.Dashboard.Avalonia.ViewModels
         public MainViewModel(
             IWeatherApiService weatherService,
             IAnimationService animationService,
-            IStorageService storageService)
+            IStorageService storageService,
+            ISettingsService settingsService)
         {
             _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
             _animationService = animationService ?? throw new ArgumentNullException(nameof(animationService));
             _storageService = storageService ?? throw new ArgumentNullException(nameof(storageService));
+            _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
 
-            var circadianService = ((App)Application.Current).ServiceProvider.GetService<ICircadianThemeService>();
-            if (circadianService != null)
+            if (Application.Current != null)
             {
-                circadianService.ThemeChanged += (s, period) =>
+                var circadianService = ((App)Application.Current).ServiceProvider?.GetService<ICircadianThemeService>();
+                if (circadianService != null)
                 {
-                    CurrentPeriod = GetPersianPeriodName(period);
-                };
-                CurrentPeriod = GetPersianPeriodName(circadianService.GetCurrentPeriod());
+                    circadianService.ThemeChanged += (s, period) => { CurrentPeriod = GetPersianPeriodName(period); };
+                    CurrentPeriod = GetPersianPeriodName(circadianService.GetCurrentPeriod());
+                }
             }
+
+            _showCurrentWeatherCard = true;
+            _showForecastCard = true;
+            _showSunTimesCard = true;
+            _showHourlyChart = true;
+            _enableWeatherFilters = true;
+            _isFilterBarVisible = true;
+            _showTemperature = true;
+            _showHumidity = true;
+            _showWindSpeed = true;
+            _showPressure = true;
+
+            OpenSettingsCommand = new RelayCommand(_ => OnOpenSettings());
 
             Favorites = new ObservableCollection<CityWeatherViewModel>();
             FilteredFavorites = new ObservableCollection<CityWeatherViewModel>();
@@ -158,18 +308,82 @@ namespace Weather.Dashboard.Avalonia.ViewModels
 
             SetFilterCommand = new RelayCommand<WeatherCondition?>(filter => SelectedFilter = filter);
             LastUpdateTime = DateTime.Now;
+
             ClearSearchCommand = new RelayCommand(_ => ClearSearch());
             AddCityCommand = new RelayCommand<City>(async city => await AddCityAsync(city));
             RemoveCityCommand = new RelayCommand<CityWeatherViewModel>(async vm => await RemoveCityAsync(vm));
             RefreshAllCommand = new RelayCommand(async _ => await RefreshAllAsync());
             SelectCityCommand = new RelayCommand<CityWeatherViewModel>(city => SelectedCity = city);
 
+            InitializeRefreshTimer();
             _ = InitializeAsync();
+        }
+
+        private void UpdateUILayout()
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"🔄 UpdateUILayout called - EnableWeatherFilters: {EnableWeatherFilters}");
+
+            IsFilterBarVisible = EnableWeatherFilters;
+            UpdateCardsGridPosition();
+
+            System.Diagnostics.Debug.WriteLine($"   → IsFilterBarVisible set to: {IsFilterBarVisible}");
+            System.Diagnostics.Debug.WriteLine($"   → CardsGridRow: {CardsGridRow}, RowSpan: {CardsGridRowSpan}");
+        }
+
+        private void InitializeRefreshTimer()
+        {
+            _refreshTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            _refreshTimer.Tick += RefreshTimer_Tick;
+        }
+
+        private void UpdateCardsGridPosition()
+        {
+            if (EnableWeatherFilters)
+            {
+                CardsGridRow = 2;
+                CardsGridRowSpan = 1;
+                System.Diagnostics.Debug.WriteLine("📐 Cards Grid: Row=2, RowSpan=1 (FilterBar visible)");
+            }
+            else
+            {
+                CardsGridRow = 1;
+                CardsGridRowSpan = 2;
+                System.Diagnostics.Debug.WriteLine("📐 Cards Grid: Row=1, RowSpan=2 (FilterBar hidden)");
+            }
+        }
+
+
+        private void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            _ = RefreshAllAsync();
+        }
+
+        private void UpdateRefreshTimer()
+        {
+            if (_refreshTimer != null)
+            {
+                _refreshTimer.Stop();
+                _refreshTimer.Interval = TimeSpan.FromMinutes(_refreshRateMinutes);
+                _refreshTimer.Start();
+                System.Diagnostics.Debug.WriteLine($"🔄 Refresh timer updated: {_refreshRateMinutes} minutes");
+            }
+        }
+
+        private void OnOpenSettings()
+        {
+            System.Diagnostics.Debug.WriteLine("⚙️ Open settings requested");
         }
 
         private void ApplyFilter()
         {
+            System.Diagnostics.Debug.WriteLine($"🔄 Applying filter: {SelectedFilter?.ToString() ?? "All"}");
+
             FilteredFavorites.Clear();
+
             var filtered = SelectedFilter == null
                 ? Favorites
                 : Favorites.Where(f => f.CurrentWeather?.Condition == SelectedFilter);
@@ -179,8 +393,7 @@ namespace Weather.Dashboard.Avalonia.ViewModels
                 FilteredFavorites.Add(city);
             }
 
-            System.Diagnostics.Debug.WriteLine(
-                $"🔍 Filter applied: {SelectedFilter?.ToString() ?? "All"} - {FilteredFavorites.Count} cities");
+            System.Diagnostics.Debug.WriteLine($"   ✅ Filter applied - {FilteredFavorites.Count} cities");
         }
 
         private string GetPersianPeriodName(CircadianPeriod period)
@@ -206,13 +419,22 @@ namespace Weather.Dashboard.Avalonia.ViewModels
         private async Task InitializeAsync()
         {
             IsInitializing = true;
-            StatusMessage = "Loading your favorites...";
+            StatusMessage = "Loading your preferences...";
+
             try
             {
+                var settings = await _settingsService.LoadAsync();
+                System.Diagnostics.Debug.WriteLine($"📥 Settings loaded from disk:");
+                System.Diagnostics.Debug.WriteLine($"   EnableWeatherFilters: {settings.Filters.EnableWeatherFilters}");
+                ApplySettingsToUI(settings);
+
+                StatusMessage = "Loading your favorites...";
                 var savedCities = await _storageService.LoadFavoritesAsync();
+
                 if (savedCities == null || savedCities.Count == 0)
                 {
                     StatusMessage = "No favorites yet. Search for a city!";
+                    UpdateRefreshTimer();
                     return;
                 }
 
@@ -232,10 +454,16 @@ namespace Weather.Dashboard.Avalonia.ViewModels
                 ApplyFilter();
                 StatusMessage = $"Loaded {Favorites.Count} favorites";
                 LastUpdateTime = DateTime.Now;
+                UpdateRefreshTimer();
+
+                System.Diagnostics.Debug.WriteLine($"✅ InitializeAsync completed - UI State:");
+                System.Diagnostics.Debug.WriteLine($"   EnableWeatherFilters: {EnableWeatherFilters}");
+                System.Diagnostics.Debug.WriteLine($"   IsFilterBarVisible: {IsFilterBarVisible}");
+                System.Diagnostics.Debug.WriteLine($"   CardsGridRow: {CardsGridRow}, RowSpan: {CardsGridRowSpan}");
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Error loading favorites: {ex.Message}";
+                StatusMessage = $"Error loading: {ex.Message}";
                 System.Diagnostics.Debug.WriteLine($"❌ InitializeAsync failed: {ex}");
             }
             finally
@@ -244,6 +472,35 @@ namespace Weather.Dashboard.Avalonia.ViewModels
                 await Task.Delay(3000);
                 StatusMessage = null;
             }
+        }
+
+        private void ApplySettingsToUI(SettingsModel settings)
+        {
+            System.Diagnostics.Debug.WriteLine("🔄 Applying settings to UI...");
+            System.Diagnostics.Debug.WriteLine(
+                $"   Settings.Filters.EnableWeatherFilters: {settings.Filters.EnableWeatherFilters}");
+
+            RefreshRateMinutes = settings.RefreshRateMinutes;
+
+            ShowCurrentWeatherCard = settings.DetailView.ShowCurrentWeatherCard;
+            ShowForecastCard = settings.DetailView.ShowForecastCard;
+            ShowSunTimesCard = settings.DetailView.ShowSunTimesCard;
+            ShowHourlyChart = settings.DetailView.ShowHourlyChart;
+
+            ShowTemperature = settings.CityCard.ShowTemperature;
+            ShowHumidity = settings.CityCard.ShowHumidity;
+            ShowWindSpeed = settings.CityCard.ShowWindSpeed;
+            ShowPressure = settings.CityCard.ShowPressure;
+
+            System.Diagnostics.Debug.WriteLine(
+                $"🎯 About to set EnableWeatherFilters to: {settings.Filters.EnableWeatherFilters}");
+            EnableWeatherFilters = settings.Filters.EnableWeatherFilters;
+
+            System.Diagnostics.Debug.WriteLine($"✅ Settings applied - Final state:");
+            System.Diagnostics.Debug.WriteLine($"   EnableWeatherFilters: {EnableWeatherFilters}");
+            System.Diagnostics.Debug.WriteLine($"   IsFilterBarVisible: {IsFilterBarVisible}");
+            System.Diagnostics.Debug.WriteLine($"   CardsGridRow: {CardsGridRow}");
+            System.Diagnostics.Debug.WriteLine($"   CardsGridRowSpan: {CardsGridRowSpan}");
         }
 
         private async Task SearchCitiesAsync()
@@ -258,13 +515,12 @@ namespace Weather.Dashboard.Avalonia.ViewModels
             _searchCts?.Cancel();
             _searchCts = new System.Threading.CancellationTokenSource();
             var token = _searchCts.Token;
-            IsSearching = true;
 
+            IsSearching = true;
             try
             {
                 await Task.Delay(300, token);
-                if (token.IsCancellationRequested)
-                    return;
+                if (token.IsCancellationRequested) return;
 
                 var (conditionFilter, cityQuery) = ParseSearchQuery(SearchQuery);
 
@@ -318,7 +574,6 @@ namespace Weather.Dashboard.Avalonia.ViewModels
                 }
 
                 HasSearchResults = SearchResults.Count > 0;
-
                 System.Diagnostics.Debug.WriteLine(
                     $"🔍 Search for '{SearchQuery}': {SearchResults.Count} results" +
                     (conditionFilter.HasValue ? $" (filtered by {conditionFilter})" : ""));
@@ -339,11 +594,9 @@ namespace Weather.Dashboard.Avalonia.ViewModels
 
         private (WeatherCondition? condition, string query) ParseSearchQuery(string input)
         {
-            if (string.IsNullOrWhiteSpace(input))
-                return (null, null);
+            if (string.IsNullOrWhiteSpace(input)) return (null, null);
 
             var trimmed = input.Trim();
-
             if (trimmed.Contains(":"))
             {
                 var parts = trimmed.Split(new[] { ':' }, 2, StringSplitOptions.RemoveEmptyEntries);
@@ -379,16 +632,16 @@ namespace Weather.Dashboard.Avalonia.ViewModels
             SearchQuery = string.Empty;
             SearchResults.Clear();
             HasSearchResults = false;
+            System.Diagnostics.Debug.WriteLine("🔍 Search cleared");
         }
 
         private async Task AddCityAsync(City city)
         {
-            if (city == null || Favorites.Any(f => f.City.Id == city.Id))
-                return;
+            if (city == null || Favorites.Any(f => f.City.Id == city.Id)) return;
 
-            
             IsSearching = true;
             StatusMessage = $"Adding {city.Name}...";
+
             try
             {
                 await _storageService.AddFavoriteAsync(city);
@@ -416,34 +669,54 @@ namespace Weather.Dashboard.Avalonia.ViewModels
             if (cityViewModel == null)
                 return;
 
-            ApplyFilter();
+            System.Diagnostics.Debug.WriteLine($"🗑️ Removing city: {cityViewModel.City.Name}");
+
             try
             {
-                await _storageService.RemoveFavoriteAsync(cityViewModel.City.Id);
                 Favorites.Remove(cityViewModel);
+                System.Diagnostics.Debug.WriteLine($"   ✅ Removed from Favorites collection");
                 if (SelectedCity == cityViewModel)
                 {
                     SelectedCity = null;
+                    System.Diagnostics.Debug.WriteLine($"   ✅ Cleared SelectedCity");
                 }
 
+                if (FilteredFavorites.Contains(cityViewModel))
+                {
+                    FilteredFavorites.Remove(cityViewModel);
+                    System.Diagnostics.Debug.WriteLine($"   ✅ Removed from FilteredFavorites collection");
+                }
+
+                await _storageService.RemoveFavoriteAsync(cityViewModel.City.Id);
+                System.Diagnostics.Debug.WriteLine($"   ✅ Removed from storage");
+
                 StatusMessage = $"{cityViewModel.City.Name} removed";
+                System.Diagnostics.Debug.WriteLine($"   ✅ Set status message");
+
                 await Task.Delay(2000);
                 StatusMessage = null;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"❌ RemoveCityAsync failed: {ex}");
                 StatusMessage = $"Failed to remove city: {ex.Message}";
+                if (!Favorites.Contains(cityViewModel))
+                {
+                    Favorites.Add(cityViewModel);
+                    ApplyFilter();
+                    System.Diagnostics.Debug.WriteLine($"   ⚠️ Re-added city due to error");
+                }
             }
         }
 
-        private async Task RefreshAllAsync()
+        public async Task RefreshAllAsync()
         {
-            if (!Favorites.Any())
-                return;
+            if (!Favorites.Any()) return;
 
             IsSearching = true;
             StatusMessage = "Refreshing all cities...";
             ApplyFilter();
+
             try
             {
                 var tasks = Favorites.Select(f => f.LoadWeatherAsync()).ToArray();
